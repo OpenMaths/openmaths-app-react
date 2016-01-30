@@ -3,6 +3,7 @@ import * as _ from 'lodash'
 import Column from './Column'
 
 interface IRowProps {
+    columns:number;
 }
 
 export default class Row extends React.Component<IRowProps, {}> {
@@ -11,13 +12,21 @@ export default class Row extends React.Component<IRowProps, {}> {
 
     // A property which holds the information about rows
 
-    // Add row above
-    // Add row below
+    // Add row above => inherited from the parent
+    // Add row below => inherited from the parent
 
     // Add column left?
     // Add column right?
 
-    columns = [<Column/>];
+    columns = [];
+
+    componentWillMount() {
+        const columns = this.props.columns;
+
+        for (let i = 0; i < columns; i++) {
+            this.columns.push(<Column/>);
+        }
+    }
 
     addColumn() {
         this.columns.push(<Column/>);
@@ -27,8 +36,12 @@ export default class Row extends React.Component<IRowProps, {}> {
 
     render() {
         return (
-            <div className="row">
-                <strong onClick={() => {this.addColumn()}}>add column</strong>
+            <div className={'row columns-' + this.props.columns.toString()}>
+                <div className="controls">
+                    <strong onClick={() => {this.addColumn()}}>prepend column</strong>
+                    <small>|</small>
+                    <strong onClick={() => {this.addColumn()}}>append column</strong>
+                </div>
                 {_.forEach(this.columns, (component:any, key:number) =>
                     {component}
                     )}
