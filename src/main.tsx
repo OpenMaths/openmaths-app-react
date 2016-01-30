@@ -1,7 +1,9 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 
+import Grid from './Grid/Grid'
+
 render(
-    <div>Hello, World!</div>,
+    <Grid/>,
     document.getElementById('OpenMathsAppContainer')
 );
