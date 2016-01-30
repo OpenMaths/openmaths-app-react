@@ -1,0 +1,36 @@
+{
+  "name": "om-react",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "dependencies": {
+    "axios": "^0.9.1",
+    "css-loader": "^0.23.1",
+    "file-loader": "^0.8.5",
+    "path": "^0.12.7",
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7",
+    "react-redux": "^4.1.2",
+    "redux-thunk": "^1.0.3",
+    "redux-tiny-router": "^0.6.1",
+    "resolve-url-loader": "^1.4.3",
+    "rx": "^4.0.7",
+    "sass-loader": "^3.1.2",
+    "style-loader": "^0.13.0",
+    "ts-loader": "^0.8.0",
+    "typescript": "^1.7.5",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.12.12",
+    "webpack-dev-server": "^1.14.1"
+  },
+  "devDependencies": {
+    "webpack-notifier": "^1.2.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack --watch -v",
+    "serve": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --port 3030"
+  },
+  "author": "",
+  "license": "ISC"
+}
