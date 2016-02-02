@@ -1,14 +1,16 @@
 import * as React from 'react'
+
 import Umi from '../Umi/Umi'
+
+import { ColumnPosition, SplitOperator } from './DataModel'
 import Grid from './Grid'
 
-enum Split {Vertically, Horizontally}
-
 interface IColumnProps {
+    addColumn: (position:ColumnPosition) => void;
 }
 
 interface IColumnState {
-    Split:Split;
+    Split:SplitOperator;
 }
 
 export default class Column extends React.Component<IColumnProps, IColumnState> {
@@ -19,20 +21,20 @@ export default class Column extends React.Component<IColumnProps, IColumnState> 
         this.setState({Split: null});
     }
 
-    split(which:Split) {
-        this.setState({Split: which});
+    split(operator:SplitOperator) {
+        this.setState({Split: operator});
     }
 
     render() {
-        const isSplit:Split = this.state['Split'];
+        const isSplit:SplitOperator = this.state['Split'];
 
         let Child:any;
 
         switch (isSplit) {
-            case Split.Horizontally:
+            case SplitOperator.Horizontally:
                 Child = <Grid rows={2} columns={1}/>;
                 break;
-            case Split.Vertically:
+            case SplitOperator.Vertically:
                 Child = <Grid rows={1} columns={2}/>;
                 break;
             default:
@@ -43,9 +45,13 @@ export default class Column extends React.Component<IColumnProps, IColumnState> 
         return (
             <div className="column">
                 <div className="controls">
-                    <strong onClick={() => {this.split(Split.Horizontally)}}>split horizontally</strong>
+                    <strong onClick={() => {this.props.addColumn(ColumnPosition.Prepend)}}>Prepend column</strong>
                     <small>|</small>
-                    <strong onClick={() => {this.split(Split.Vertically)}}>split vertically</strong>
+                    <strong onClick={() => {this.props.addColumn(ColumnPosition.Append)}}>Append column</strong>
+                    <small>|</small>
+                    <strong onClick={() => {this.split(SplitOperator.Horizontally)}}>Split Horizontally</strong>
+                    <small>|</small>
+                    <strong onClick={() => {this.split(SplitOperator.Vertically)}}>Split Vertically</strong>
                 </div>
 
                 {Child}

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as _ from 'lodash'
 
+import { RowPosition } from './DataModel'
 import Row from './Row'
 
 interface IGridProps {
@@ -18,12 +19,19 @@ export default class Grid extends React.Component<IGridProps, {}> {
             columns = this.props.columns;
 
         for (let i = 0; i < rows; i++) {
-            this.rows.push(<Row columns={columns}/>);
+            this.rows.push(<Row columns={columns} addRow={this.addRow.bind(this)}/>);
         }
     }
 
-    addRow() {
-        this.rows.push(<Row columns={1}/>);
+    addRow(position:RowPosition) {
+        switch (position) {
+            case RowPosition.Above:
+                this.rows.unshift(<Row columns={1} addRow={this.addRow.bind(this)}/>);
+                break;
+            case RowPosition.Below:
+                this.rows.push(<Row columns={1} addRow={this.addRow.bind(this)}/>);
+                break;
+        }
 
         console.log(this.rows);
     }
@@ -31,12 +39,6 @@ export default class Grid extends React.Component<IGridProps, {}> {
     render() {
         return (
             <div className={'grid rows-' + this.props.rows.toString()}>
-                <div className="controls">
-                    <strong onClick={() => {this.addRow()}}>Insert row above</strong>
-                    <small>|</small>
-                    <strong onClick={() => {this.addRow()}}>Insert row below</strong>
-                </div>
-
                 {_.forEach(this.rows, (component:any, key:number) =>
                     {component}
                     )}
