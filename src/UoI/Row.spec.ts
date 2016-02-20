@@ -9,7 +9,9 @@
 //        f:null,
 //        g:{
 //            i:{
-//                j:"content_id_b"
+//                j:{
+//                    k:"content_id_b"
+//                }
 //            }
 //        },
 //        h:null
@@ -30,7 +32,9 @@ describe('Row component', () => {
                 f: null,
                 g: {
                     i: {
-                        j: "content_id_b"
+                        j: {
+                            k: "content_id_b"
+                        }
                     }
                 },
                 h: null
