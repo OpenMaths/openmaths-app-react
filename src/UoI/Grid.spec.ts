@@ -50,6 +50,6 @@ describe('Grid component', () => {
 
         _.forEach(GridComponent.children, child => {
             expect(child instanceof Row).to.be(true);
-        })
+        });
     });
 });
