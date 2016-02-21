@@ -30,7 +30,7 @@ export class Column {
         this.child = (!content || _.isString(content)) ? new UoI(content) : new Grid(content);
     };
 
-    // @TODO unit test
+    // @TODO more unit tests
     static construct(type:ColumnConstructor, content:string|GridUrlConstruct):ColumnUrlConstruct {
         const id = shortid.generate();
 

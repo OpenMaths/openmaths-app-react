@@ -11,6 +11,7 @@ export interface GridUrlConstruct {
 export class Grid {
     id:string;
     children:Row[];
+    constructInput:GridUrlConstruct;
 
     constructor(input:GridUrlConstruct) {
         if (!input || !_.isObject(input) || _.isArray(input))
@@ -22,6 +23,7 @@ export class Grid {
             throw new RangeError('Grid can only have one key, e.g. be of format {key: {...rows}}');
 
         this.id = _.first(keys).toString();
+        this.constructInput = input;
 
         const rowsInput = input[this.id];
 
@@ -34,7 +36,7 @@ export class Grid {
         this.children = _.map(rowsInput, (row:RowUrlConstruct) => new Row(row));
     }
 
-    // @TODO unit test
+    // @TODO more unit tests
     static construct(rows:RowUrlConstruct[]):GridUrlConstruct {
         if (!_.isArray(rows))
             throw new TypeError('The input for constructing Grid URL can only be a list of valid RowUrlConstruct objects');
@@ -53,9 +55,29 @@ export class Grid {
     static constructEmpty():GridUrlConstruct {
         const
             columns = [Column.construct(ColumnConstructor.Empty, null)],
-            rows = [Row.construct(columns)],
-            grid = Grid.construct(rows);
+            rows = [Row.construct(columns)];
 
-        return grid;
+        return Grid.construct(rows);
+    }
+
+    static parseUrl(url:string):GridUrlConstruct {
+        let parsedUrl;
+
+        try {
+            parsedUrl = JSON.parse(url);
+        } catch (Exception) {
+            console.error(Exception);
+            parsedUrl = null;
+        }
+
+        return parsedUrl;
+    }
+
+    addRow(row:RowUrlConstruct):Grid {
+        const rows = _.clone(this.constructInput[this.id]);
+
+        rows.push(row);
+
+        return new Grid(Grid.construct(rows));
     }
 }
