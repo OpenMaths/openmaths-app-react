@@ -50,4 +50,15 @@ describe('Row component', () => {
             expect(child instanceof Column).toBe(true);
         });
     });
+
+    it('should throw an error when input for children is invalid', () => {
+        const
+            ErrInput1 = ['c'],
+            ErrInput2 = null,
+            ErrInput3 = {};
+
+        expect(() => new Row('hello_world', ErrInput1)).toThrow();
+        expect(() => new Row('', ErrInput2)).toThrow();
+        expect(() => new Row('', ErrInput3)).toThrow();
+    });
 });

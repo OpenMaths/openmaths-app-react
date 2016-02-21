@@ -74,7 +74,7 @@ describe('Grid component', () => {
     it('should throw an error when input for children is invalid', () => {
         const
             ErrInput1 = {
-                a: []
+                a: null
             },
             ErrInput2 = {
                 a: {}

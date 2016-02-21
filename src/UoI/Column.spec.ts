@@ -39,6 +39,18 @@ describe('Column component', () => {
         expect(ColumnComponent.child instanceof UoI).toBe(true);
     });
 
+    it('should enable null to be passed in instead of a valid content identifier', () => {
+        const input = {
+            g: null
+        };
+
+        const ColumnComponent = new Column('g', input['g']);
+
+        expect(ColumnComponent.id).toEqual('g');
+
+        expect(ColumnComponent.child instanceof UoI).toBe(true);
+    });
+
     it('should parse its recurring input correctly', () => {
         const input = {
             g: {

@@ -6,9 +6,8 @@ export default class Grid {
     children:Row[];
 
     constructor(input) {
-        // @TODO Check for the number of children first, throw an exception if invalid
-        if (!_.isObject(input))
-            throw new TypeError('Input of Grid needs to be a valid Object');
+        if (!input || !_.isObject(input) || _.isArray(input))
+            throw new TypeError('The input of Grid needs to be a valid Object');
 
         const keys = _.keys(input);
 
@@ -19,12 +18,12 @@ export default class Grid {
 
         const rowsInput = input[this.id];
 
-        if (!_.isObject(rowsInput))
-            throw new TypeError('Input for instantiating Grid\'s rows needs to be a valid Object');
+        if (!rowsInput || !_.isObject(rowsInput) || _.isArray(rowsInput))
+            throw new TypeError('The input for instantiating Grid\'s rows needs to be a valid Object');
 
         if (_.keys(rowsInput).length < 1)
-            throw new RangeError('Input for instantiating Grid\'s rows needs to consist of at least 1 valid object');
+            throw new RangeError('The input for instantiating Grid\'s rows needs to consist of at least 1 valid object');
 
-        this.children = _.map(input[this.id], (input, id) => new Row(id, input));
+        this.children = _.map(rowsInput, (input, id) => new Row(id, input));
     }
 }

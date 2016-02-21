@@ -8,11 +8,7 @@ export default class Column {
     child;
 
     constructor(id, input) {
-        this.id = id;
-
-        if (input)
-            this.child = _.isString(input) ? new UoI(input) : new Grid(input);
-        else
-            this.child = null;
+        this.id = id.toString();
+        this.child = (!input || _.isString(input)) ? new UoI(input) : new Grid(input);
     };
 }
