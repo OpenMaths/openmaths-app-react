@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as _ from 'lodash'
 
-import { ColumnPosition, RowPosition } from './DataModel'
+import { ColumnPosition, RowPosition } from '../DataModel'
 import Column from './Column'
 
 interface IRowProps {

@@ -1,8 +1,8 @@
 import * as React from 'react'
 
-import Umi from '../Umi/Umi'
+import Umi from '../../Umi/Umi'
 
-import { ColumnPosition, SplitOperator } from './DataModel'
+import { ColumnPosition, SplitOperator } from '../DataModel'
 import Grid from './Grid'
 
 interface IColumnProps {

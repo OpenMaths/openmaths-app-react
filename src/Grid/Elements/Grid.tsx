@@ -1,8 +1,10 @@
 import * as React from 'react'
 import * as _ from 'lodash'
 
-import { RowPosition } from './DataModel'
+import { RowPosition } from '../DataModel'
 import Row from './Row'
+
+import GridComponent from '../Components/Grid'
 
 interface IGridProps {
     rows:number;
@@ -10,10 +12,26 @@ interface IGridProps {
     init?:any;
 }
 
+const URL = '{"a":{"b":{"d":"content_id_a","e":null},"c":{"f":null,"g":{"i":{"j":{"k":"content_id_b"}}},"h":null}}}';
+
 export default class Grid extends React.Component<IGridProps, {}> {
     rows = [];
 
     componentWillMount() {
+        let parsedUrl;
+
+        try {
+            parsedUrl = JSON.parse(URL);
+        } catch (Exception) {
+            console.error(Exception);
+            parsedUrl = null;
+        }
+
+        //const GridTest = new GridComponent(parsedUrl);
+        //console.log(GridTest);
+
+        GridComponent.constructEmpty();
+
         const
             rows = this.props.rows,
             columns = this.props.columns;
