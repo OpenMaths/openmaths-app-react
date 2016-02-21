@@ -20,7 +20,6 @@
 
 
 import * as _ from 'lodash'
-import expect = require('expect.js')
 
 import Row from './Row'
 import Column from './Column'
@@ -43,12 +42,12 @@ describe('Row component', () => {
 
         const RowComponent = new Row('c', input['c']);
 
-        expect(RowComponent.id).to.equal('c');
+        expect(RowComponent.id).toEqual('c');
 
-        expect(RowComponent.children.length).to.be(3);
+        expect(RowComponent.children.length).toBe(3);
 
         _.forEach(RowComponent.children, child => {
-            expect(child instanceof Column).to.be(true);
+            expect(child instanceof Column).toBe(true);
         });
     });
 });

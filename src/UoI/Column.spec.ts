@@ -20,7 +20,6 @@
 
 
 import * as _ from 'lodash'
-import expect = require('expect.js')
 
 import Grid from './Grid'
 import Row from './Row'
@@ -35,9 +34,9 @@ describe('Column component', () => {
 
         const ColumnComponent = new Column('g', input['g']);
 
-        expect(ColumnComponent.id).to.equal('g');
+        expect(ColumnComponent.id).toEqual('g');
 
-        expect(ColumnComponent.child instanceof UoI).to.be(true);
+        expect(ColumnComponent.child instanceof UoI).toBe(true);
     });
 
     it('should parse its recurring input correctly', () => {
@@ -53,8 +52,8 @@ describe('Column component', () => {
 
         const ColumnComponent = new Column('g', input['g']);
 
-        expect(ColumnComponent.id).to.equal('g');
+        expect(ColumnComponent.id).toEqual('g');
 
-        expect(ColumnComponent.child instanceof Grid).to.be(true);
+        expect(ColumnComponent.child instanceof Grid).toBe(true);
     });
 });

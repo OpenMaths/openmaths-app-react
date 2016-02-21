@@ -19,7 +19,6 @@
 //}}
 
 import * as _ from 'lodash'
-import expect = require('expect.js')
 
 import Grid from './Grid'
 import Row from './Row'
@@ -48,12 +47,44 @@ describe('Grid component', () => {
 
         const GridComponent = new Grid(input);
 
-        expect(GridComponent.id).to.equal('a');
+        expect(GridComponent.id).toEqual('a');
 
-        expect(GridComponent.children.length).to.be(2);
+        expect(GridComponent.children.length).toBe(2);
 
-        _.forEach(GridComponent.children, child => {
-            expect(child instanceof Row).to.be(true);
+        _.forEach(GridComponent.children, (child:Row) => {
+            expect(child instanceof Row).toBe(true);
         });
+    });
+
+    it('should throw an error when input is invalid', () => {
+        const input = ['a', 'b'];
+
+        expect(() => new Grid(input)).toThrow();
+    });
+
+    it('should throw an error when input has too many keys', () => {
+        const input = {
+            a: {},
+            b: {}
+        };
+
+        expect(() => new Grid(input)).toThrow();
+    });
+
+    it('should throw an error when input for children is invalid', () => {
+        const
+            ErrInput1 = {
+                a: []
+            },
+            ErrInput2 = {
+                a: {}
+            },
+            ErrInput3 = {
+                a: 'b'
+            };
+
+        expect(() => new Grid(ErrInput1)).toThrow();
+        expect(() => new Grid(ErrInput2)).toThrow();
+        expect(() => new Grid(ErrInput3)).toThrow();
     });
 });
