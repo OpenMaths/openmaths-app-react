@@ -2,19 +2,19 @@ import '../public/css/app.sass'
 
 import * as React from 'react'
 import { render } from 'react-dom'
+import { Provider } from 'react-redux'
 
-import { Grid, GridUrlConstruct } from './Grid/Components/Grid'
-import { Row, RowUrlConstruct } from './Grid/Components/Row'
-import { Column, ColumnConstructor } from './Grid/Components/Column'
+import configureStore from './configureStore'
 
-import GridElement from './Grid/Elements/Grid'
+const store = configureStore();
 
-const
-    columnsUrl = [Column.construct(ColumnConstructor.Content, Grid.constructEmpty())],
-    rowsUrl = [Row.construct(columnsUrl)],
-    gridUrl = Grid.construct(rowsUrl);
+import View from './View/View'
 
 render(
-    <GridElement layout={new Grid(gridUrl)}/>,
+    <Provider store={store}>
+        <main id="app">
+            <View/>
+        </main>
+    </Provider>,
     document.getElementById('OpenMathsAppContainer')
 );

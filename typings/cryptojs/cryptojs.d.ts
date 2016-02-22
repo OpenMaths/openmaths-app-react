@@ -5,7 +5,12 @@
 
 declare var CryptoJS: CryptoJS.CryptoJSStatic;
 
-declare module CryptoJS{
+declare module 'crypto-js' {
+    import lib = CryptoJS;
+    export = lib;
+}
+
+declare module CryptoJS {
     module lib{
         interface Base{
             extend(overrides: Object): Object
