@@ -7,36 +7,44 @@ import { Grid, GridUrlConstruct } from '../Components/Grid'
 import { Row, RowUrlConstruct } from '../Components/Row'
 import { Column, ColumnConstructor } from '../Components/Column'
 
+import { requestUpdateGrid } from '../Actions'
 import { RowPosition } from '../DataModel'
-import { decryptGridUrl } from '../Url'
+import { encryptGridUrl, decryptGridUrl } from '../Url'
 
 import RowElement from './Row'
 
 interface IGridProps {
+    dispatch?: Redux.Dispatch;
     layout?:Grid;
-    GridUrlConstructor?:string;
+    triggerInitGrid?:Grid;
 }
 
 class GridElement extends React.Component<IGridProps, {}> {
     layout:Grid;
+    //url:GridUrlConstruct;
 
     componentWillMount() {
-        this.layout = this.props.layout;
     }
 
-    constructLayoutFromUrl():Grid {
-        return new Grid(decryptGridUrl(this.props.GridUrlConstructor));
-    }
+    //constructLayoutFromUrl():Grid {
+    //    return new Grid(this.url);
+    //}
 
     addRow(position:RowPosition, row:RowUrlConstruct) {
         const newUrl = this.layout.addRow(position, row);
 
-        console.log(newUrl);
+        // This should trigger an action called requestUpdateGrid with the corresponding Id and new Row Url Constructor
+        this.props.dispatch(requestUpdateGrid(this.layout.id, newUrl));
     }
 
     build() {
+        if (!this.props.layout && !this.props.triggerInitGrid)
+            return <div></div>;
+
+        this.layout = this.props.layout ? this.props.layout : this.props.triggerInitGrid;
+
         const
-            layout = this.layout ? this.layout : this.constructLayoutFromUrl(),
+            layout = this.layout,
             numberOfRows = layout.children.length;
 
         if (layout instanceof Grid) {
@@ -53,13 +61,13 @@ class GridElement extends React.Component<IGridProps, {}> {
     }
 
     render() {
-        return (this.props.layout || this.props.GridUrlConstructor) ? this.build() : <div></div>;
+        return this.props.triggerInitGrid ? this.build() : <div></div>;
     }
 }
 
 function select(state) {
     return {
-        GridUrlConstructor: state.router.params.GridUrlConstructor
+        triggerInitGrid: state.TriggerGridReducer.triggerInitGrid
     };
 }
 

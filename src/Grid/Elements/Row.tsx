@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as _ from 'lodash'
 
+import { GridUrlConstruct } from '../Components/Grid'
 import { Row, RowUrlConstruct } from '../Components/Row'
 import { Column, ColumnUrlConstruct, ColumnConstructor } from '../Components/Column'
 
@@ -9,6 +10,7 @@ import ColumnElement from './Column'
 
 interface IRowProps {
     layout:Row;
+    //url:GridUrlConstruct;
     addRow:(position:RowPosition, row:RowUrlConstruct) => void;
 }
 
@@ -20,9 +22,18 @@ export default class RowElement extends React.Component<IRowProps, {}> {
     }
 
     addColumn(position:ColumnPosition, column:ColumnUrlConstruct) {
-        const newUrl = this.layout.addColumn(position, column);
+        //const origUrl = this.props.url;
 
-        console.log(newUrl);
+        //console.log(JSON.stringify(origUrl));
+        //console.log(this.layout.id);
+
+        //console.info(JSON.stringify(origUrl));
+        //console.log(JSON.stringify(this.layout.constructInput));
+
+        // returns a new row to be replaced based on this.layout.id
+        const newRowUrl = this.layout.addColumn(position, column);
+
+        //console.log(JSON.stringify(newRowUrl));
     }
 
     build() {

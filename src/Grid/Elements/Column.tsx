@@ -39,7 +39,12 @@ export default class ColumnElement extends React.Component<IColumnProps, {}> {
             );
         } else if (child instanceof UoI) {
             return (
-                <div className="column">UOI</div>
+                <div className="column">
+                    <strong onClick={() => this.props.addColumn(ColumnPosition.Append, column)}>Append Column</strong>
+                    <strong onClick={() => this.props.addColumn(ColumnPosition.Prepend, column)}>Prepend Column</strong>
+
+                    <div>UoI</div>
+                </div>
             );
         } else {
             console.error(layout);
