@@ -2,60 +2,85 @@ import * as React from 'react'
 
 import Umi from '../../Umi/Umi'
 
+import { Grid } from '../Components/Grid'
+import { Column, ColumnUrlConstruct, ColumnConstructor } from '../Components/Column'
+import UoI from '../../UoI/UoI'
+
 import { ColumnPosition, SplitOperator } from '../DataModel'
-import Grid from './Grid'
+import GridElement from './Grid'
 
 interface IColumnProps {
-    addColumn: (position:ColumnPosition) => void;
+    layout:Column;
+    addColumn:(position:ColumnPosition, column:ColumnUrlConstruct) => void;
 }
 
-interface IColumnState {
-    Split:SplitOperator;
-}
-
-export default class Column extends React.Component<IColumnProps, IColumnState> {
-    // There should be an actions component that takes in a config object describing the available actions and the
-    // methods bound
+export default class ColumnElement extends React.Component<IColumnProps, {}> {
+    layout:Column;
 
     componentWillMount() {
-        this.setState({Split: null});
+        this.layout = this.props.layout;
     }
 
-    split(operator:SplitOperator) {
-        this.setState({Split: operator});
+    build() {
+        const
+            layout = this.props.layout,
+            child = layout.child;
+
+        const column = Column.construct(ColumnConstructor.Empty, null);
+
+        if (child instanceof Grid) {
+            return (
+                <div className="column">
+                    <strong onClick={() => this.props.addColumn(ColumnPosition.Append, column)}>Append Column</strong>
+                    <strong onClick={() => this.props.addColumn(ColumnPosition.Prepend, column)}>Prepend Column</strong>
+
+                    <GridElement layout={child}/>
+                </div>
+            );
+        } else if (child instanceof UoI) {
+            return (
+                <div className="column">UOI</div>
+            );
+        } else {
+            console.error(layout);
+            throw new TypeError('Unsupported instance');
+        }
     }
 
     render() {
-        const isSplit:SplitOperator = this.state['Split'];
+        return this.build();
 
-        let Child:any;
 
-        switch (isSplit) {
-            case SplitOperator.Horizontally:
-                Child = <Grid rows={2} columns={1}/>;
-                break;
-            case SplitOperator.Vertically:
-                Child = <Grid rows={1} columns={2}/>;
-                break;
-            default:
-                Child = <Umi/>;
-                break;
-        }
-
-        return (
-            <div className="column">
-                <div className="controls">
-                    <strong onClick={() => {this.props.addColumn(ColumnPosition.Prepend)}}>Prepend column</strong>
-                    <small>|</small>
-                    <strong onClick={() => {this.props.addColumn(ColumnPosition.Append)}}>Append column</strong>
-                    <small>|</small>
-                    <strong onClick={() => {this.split(SplitOperator.Horizontally)}}>Split Horizontally</strong>
-                    <small>|</small>
-                    <strong onClick={() => {this.split(SplitOperator.Vertically)}}>Split Vertically</strong>
-                </div>
-
-                {Child}
-            </div>
-        );
+        //const isSplit:SplitOperator = this.state['Split'];
+        //
+        //let Child:any;
+        //
+        //switch (isSplit) {
+        //    case SplitOperator.Horizontally:
+        //        Child = <Grid/>;
+        //        break;
+        //    case SplitOperator.Vertically:
+        //        Child = <Grid/>;
+        //        break;
+        //    default:
+        //        Child = <Umi/>;
+        //        break;
+        //}
+        //
+        //return (
+        //    <div className="column">
+        //        <div className="controls">
+        //            <strong onClick={() => {this.props.addColumn(ColumnPosition.Prepend)}}>Prepend column</strong>
+        //            <small>|</small>
+        //            <strong onClick={() => {this.props.addColumn(ColumnPosition.Append)}}>Append column</strong>
+        //            <small>|</small>
+        //            <strong onClick={() => {this.split(SplitOperator.Horizontally)}}>Split Horizontally</strong>
+        //            <small>|</small>
+        //            <strong onClick={() => {this.split(SplitOperator.Vertically)}}>Split Vertically</strong>
+        //        </div>
+        //
+        //        {Child}
+        //    </div>
+        //);
     }
 }

@@ -1,6 +1,8 @@
 import * as _ from 'lodash'
 import * as shortid from 'shortid'
 
+import { RowPosition } from '../DataModel'
+
 import { Row, RowUrlConstruct } from './Row'
 import { Column, ColumnConstructor } from './Column'
 
@@ -37,6 +39,7 @@ export class Grid {
     }
 
     // @TODO more unit tests
+    // Change to constructURL
     static construct(rows:RowUrlConstruct[]):GridUrlConstruct {
         if (!_.isArray(rows))
             throw new TypeError('The input for constructing Grid URL can only be a list of valid RowUrlConstruct objects');
@@ -52,6 +55,8 @@ export class Grid {
         return resultingObject;
     }
 
+
+    // @TODO replicate for row and column
     static constructEmpty():GridUrlConstruct {
         const
             columns = [Column.construct(ColumnConstructor.Empty, null)],
@@ -73,11 +78,18 @@ export class Grid {
         return parsedUrl;
     }
 
-    addRow(row:RowUrlConstruct):Grid {
-        const rows = _.clone(this.constructInput[this.id]);
+    addRow(position:RowPosition, row:RowUrlConstruct):GridUrlConstruct {
+        let rows = _.clone(this.constructInput[this.id]);
 
-        rows.push(row);
+        switch (position) {
+            case RowPosition.Above:
+                rows.unshift(row);
+                break;
+            case RowPosition.Below:
+                rows.push(row);
+                break;
+        }
 
-        return new Grid(Grid.construct(rows));
+        return Grid.construct(rows);
     }
 }

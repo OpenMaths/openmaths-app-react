@@ -1,66 +1,49 @@
 import * as React from 'react'
 import * as _ from 'lodash'
 
-import { RowPosition } from '../DataModel'
-import Row from './Row'
+import { Grid, GridUrlConstruct } from '../Components/Grid'
+import { Row, RowUrlConstruct } from '../Components/Row'
+import { Column, ColumnConstructor } from '../Components/Column'
 
-import { Grid as GridComponent } from '../Components/Grid'
-import { Row as RowComponent } from '../Components/Row'
-import { Column as ColumnComponent, ColumnConstructor } from '../Components/Column'
+import { RowPosition } from '../DataModel'
+import RowElement from './Row'
 
 interface IGridProps {
-    rows:number;
-    columns:number;
-    init?:any;
+    layout:Grid;
 }
 
-export default class Grid extends React.Component<IGridProps, {}> {
-    rows = [];
+export default class GridElement extends React.Component<IGridProps, {}> {
+    layout:Grid;
 
     componentWillMount() {
-        const
-            gridUrl = GridComponent.constructEmpty(),
-            gridUrlString = JSON.stringify(gridUrl),
-            parsedUrl = GridComponent.parseUrl(gridUrlString),
-            constructedGrid = new GridComponent(parsedUrl);
-
-        console.log(gridUrl);
-        console.log(gridUrlString);
-        console.log(parsedUrl);
-        console.log(constructedGrid);
-
-        const withNewRow = constructedGrid.addRow(RowComponent.construct([ColumnComponent.construct(ColumnConstructor.Empty, null)]));
-        console.log(withNewRow);
-
-        const
-            rows = this.props.rows,
-            columns = this.props.columns;
-
-        for (let i = 0; i < rows; i++) {
-            this.rows.push(<Row columns={columns} addRow={this.addRow.bind(this)}/>);
-        }
+        this.layout = this.props.layout;
     }
 
-    addRow(position:RowPosition) {
-        switch (position) {
-            case RowPosition.Above:
-                this.rows.unshift(<Row columns={1} addRow={this.addRow.bind(this)}/>);
-                break;
-            case RowPosition.Below:
-                this.rows.push(<Row columns={1} addRow={this.addRow.bind(this)}/>);
-                break;
-        }
+    addRow(position:RowPosition, row:RowUrlConstruct) {
+        const newUrl = this.layout.addRow(position, row);
 
-        console.log(this.rows);
+        console.log(newUrl);
+    }
+
+    build() {
+        const
+            layout = this.layout,
+            numberOfRows = layout.children.length;
+
+        if (layout instanceof Grid) {
+            return (
+                <div className={'grid rows-' + numberOfRows} key={layout.id}>
+                    {layout.children.map((row:Row) => <RowElement addRow={this.addRow.bind(this)} layout={row}
+                                                                  key={row.id}/>)}
+                </div>
+            );
+        } else {
+            console.error(layout);
+            throw new TypeError('Unsupported instance');
+        }
     }
 
     render() {
-        return (
-            <div className={'grid rows-' + this.props.rows.toString()}>
-                {_.forEach(this.rows, (component:any, key:number) =>
-                    {component}
-                    )}
-            </div>
-        );
+        return this.build();
     }
 }

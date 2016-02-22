@@ -12,7 +12,7 @@ export interface ColumnUrlConstruct {
 
 export class Column {
     id:string;
-    child;
+    child:UoI|Grid;
 
     constructor(input:ColumnUrlConstruct) {
         if (!input || !_.isObject(input) || _.isArray(input))
@@ -31,6 +31,7 @@ export class Column {
     };
 
     // @TODO more unit tests
+    // Change to constructURL
     static construct(type:ColumnConstructor, content:string|GridUrlConstruct):ColumnUrlConstruct {
         const id = shortid.generate();
 

@@ -1,50 +1,54 @@
 import * as React from 'react'
 import * as _ from 'lodash'
 
+import { Row, RowUrlConstruct } from '../Components/Row'
+import { Column, ColumnUrlConstruct, ColumnConstructor } from '../Components/Column'
+
 import { ColumnPosition, RowPosition } from '../DataModel'
-import Column from './Column'
+import ColumnElement from './Column'
 
 interface IRowProps {
-    columns:number;
-    addRow: (position:RowPosition) => void;
+    layout:Row;
+    addRow:(position:RowPosition, row:RowUrlConstruct) => void;
 }
 
-export default class Row extends React.Component<IRowProps, {}> {
-    columns = [];
+export default class RowElement extends React.Component<IRowProps, {}> {
+    layout:Row;
 
     componentWillMount() {
-        const columns = this.props.columns;
-
-        for (let i = 0; i < columns; i++) {
-            this.columns.push(<Column addColumn={this.addColumn.bind(this)}/>);
-        }
+        this.layout = this.props.layout;
     }
 
-    addColumn(position:ColumnPosition) {
-        switch (position) {
-            case ColumnPosition.Append:
-                this.columns.push(<Column addColumn={this.addColumn.bind(this)}/>);
-                break;
-            case ColumnPosition.Prepend:
-                this.columns.unshift(<Column addColumn={this.addColumn.bind(this)}/>);
-                break;
-        }
+    addColumn(position:ColumnPosition, column:ColumnUrlConstruct) {
+        const newUrl = this.layout.addColumn(position, column);
 
-        console.log(this.columns);
+        console.log(newUrl);
+    }
+
+    build() {
+        const
+            layout = this.layout,
+            numberOfColumns = layout.children.length;
+
+        const row = Row.construct([Column.construct(ColumnConstructor.Empty, null)]);
+
+        if (layout instanceof Row) {
+            return (
+                <div className={'row columns-' + numberOfColumns}>
+                    <strong onClick={() => this.props.addRow(RowPosition.Above, row)}>Insert Row Above</strong>
+                    <strong onClick={() => this.props.addRow(RowPosition.Below, row)}>Insert Row Below</strong>
+
+                    {layout.children.map((column:Column) => <ColumnElement addColumn={this.addColumn.bind(this)}
+                                                                           layout={column} key={column.id}/>)}
+                </div>
+            );
+        } else {
+            console.error(layout);
+            throw new TypeError('Unsupported instance');
+        }
     }
 
     render() {
-        return (
-            <div className={'row columns-' + this.props.columns.toString()}>
-                <div className="controls">
-                    <strong onClick={() => {this.props.addRow(RowPosition.Above)}}>Insert Row Above</strong>
-                    <small>|</small>
-                    <strong onClick={() => {this.props.addRow(RowPosition.Below)}}>Insert Row Below</strong>
-                </div>
-                {_.forEach(this.columns, (component:any, key:number) =>
-                    {component}
-                    )}
-            </div>
-        );
+        return this.build();
     }
 }

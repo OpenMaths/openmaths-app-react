@@ -1,6 +1,8 @@
 import * as _ from 'lodash'
 import * as shortid from 'shortid'
 
+import { ColumnPosition } from '../DataModel'
+
 import { Column, ColumnConstructor, ColumnUrlConstruct } from './Column'
 
 export interface RowUrlConstruct {
@@ -10,6 +12,7 @@ export interface RowUrlConstruct {
 export class Row {
     id:string;
     children:Column[];
+    constructInput:RowUrlConstruct;
 
     constructor(input:RowUrlConstruct) {
         if (!input || !_.isObject(input) || _.isArray(input))
@@ -21,6 +24,7 @@ export class Row {
             throw new RangeError('Row can only have one key, e.g. be of format {row: {...columns}}');
 
         this.id = _.first(keys).toString();
+        this.constructInput = input;
 
         const columnsInput = input[this.id];
 
@@ -34,6 +38,7 @@ export class Row {
     }
 
     // @TODO more unit tests
+    // Change to constructURL
     static construct(columns:ColumnUrlConstruct[]):RowUrlConstruct {
         if (!_.isArray(columns))
             throw new TypeError('The input for constructing Row URL can only be a list of valid ColumnUrlConstruct objects');
@@ -47,5 +52,20 @@ export class Row {
         resultingObject[id] = columns;
 
         return resultingObject;
+    }
+
+    addColumn(position:ColumnPosition, column:ColumnUrlConstruct):RowUrlConstruct {
+        let columns = _.clone(this.constructInput[this.id]);
+
+        switch (position) {
+            case ColumnPosition.Prepend:
+                columns.unshift(column);
+                break;
+            case ColumnPosition.Append:
+                columns.push(column);
+                break;
+        }
+
+        return Row.construct(columns);
     }
 }
