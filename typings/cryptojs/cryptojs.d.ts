@@ -5,12 +5,7 @@
 
 declare var CryptoJS: CryptoJS.CryptoJSStatic;
 
-declare module 'crypto-js' {
-    import lib = CryptoJS;
-    export = lib;
-}
-
-declare module CryptoJS {
+declare module CryptoJS{
     module lib{
         interface Base{
             extend(overrides: Object): Object
@@ -471,4 +466,9 @@ declare module CryptoJS {
         EvpKDF: CryptoJS.algo.IEvpKDFHelper
         PBKDF2: CryptoJS.algo.IEvpKDFHelper //PBKDF2 is same as EvpKDF
     }
+}
+
+declare module 'crypto-js' {
+    import lib = CryptoJS;
+    export = lib;
 }

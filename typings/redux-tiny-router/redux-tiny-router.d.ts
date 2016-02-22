@@ -1,8 +1,6 @@
 declare module 'redux-tiny-router' {
     interface RouterParams {
-        AppTypeName?:string;
-        AppDescriptionId?:string;
-        AppExecutionId?:string;
+        [param:string]:string;
     }
 
     interface RouterState {

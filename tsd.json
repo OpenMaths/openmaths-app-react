@@ -1,39 +1,39 @@
 {
   "version": "v4",
-  "repo": "borisyankov/DefinitelyTyped",
+  "repo": "OpenMaths/DefinitelyTyped",
   "ref": "master",
   "path": "typings",
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "react/react-dom.d.ts": {
-      "commit": "5d0f2126c8dac8fce0ff020218aea06607213b0d"
+      "commit": "0b4f725a96ae1e9d9451ff9d59b5bf5e1511854f"
     },
     "react/react.d.ts": {
-      "commit": "bd269cad4cb2b495f940c7b6afc5825d568029be"
+      "commit": "0b4f725a96ae1e9d9451ff9d59b5bf5e1511854f"
     },
     "lodash/lodash.d.ts": {
-      "commit": "5d0f2126c8dac8fce0ff020218aea06607213b0d"
-    },
-    "expect.js/expect.js.d.ts": {
-      "commit": "95b7178e0ef33b4b88327676418b4cc3ad61df0f"
-    },
-    "mocha/mocha.d.ts": {
-      "commit": "95b7178e0ef33b4b88327676418b4cc3ad61df0f"
+      "commit": "0b4f725a96ae1e9d9451ff9d59b5bf5e1511854f"
     },
     "jasmine/jasmine.d.ts": {
-      "commit": "95433230a9913054c57c715e6b91a9ae738d0b97"
+      "commit": "0b4f725a96ae1e9d9451ff9d59b5bf5e1511854f"
     },
     "shortid/shortid.d.ts": {
-      "commit": "95433230a9913054c57c715e6b91a9ae738d0b97"
+      "commit": "0b4f725a96ae1e9d9451ff9d59b5bf5e1511854f"
     },
     "react-redux/react-redux.d.ts": {
-      "commit": "bd269cad4cb2b495f940c7b6afc5825d568029be"
+      "commit": "0b4f725a96ae1e9d9451ff9d59b5bf5e1511854f"
     },
     "redux/redux.d.ts": {
-      "commit": "bd269cad4cb2b495f940c7b6afc5825d568029be"
+      "commit": "0b4f725a96ae1e9d9451ff9d59b5bf5e1511854f"
     },
     "redux-thunk/redux-thunk.d.ts": {
-      "commit": "bd269cad4cb2b495f940c7b6afc5825d568029be"
+      "commit": "0b4f725a96ae1e9d9451ff9d59b5bf5e1511854f"
+    },
+    "redux-tiny-router/redux-tiny-router.d.ts": {
+      "commit": "0b4f725a96ae1e9d9451ff9d59b5bf5e1511854f"
+    },
+    "cryptojs/cryptojs.d.ts": {
+      "commit": "0b4f725a96ae1e9d9451ff9d59b5bf5e1511854f"
     }
   }
 }
