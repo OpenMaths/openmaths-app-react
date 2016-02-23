@@ -5,43 +5,37 @@ import { tinyActions } from 'redux-tiny-router'
 
 import { Grid, GridUrlConstruct } from '../Components/Grid'
 import { Row, RowUrlConstruct } from '../Components/Row'
-import { Column, ColumnConstructor } from '../Components/Column'
+import { Column, ColumnUrlConstruct, ColumnConstructor } from '../Components/Column'
 
 import { requestUpdateGrid } from '../Actions'
 import { RowPosition } from '../DataModel'
-import { encryptGridUrl, decryptGridUrl } from '../Url'
 
 import RowElement from './Row'
 
 interface IGridProps {
     dispatch?: Redux.Dispatch;
     layout?:Grid;
+
+    // State => Props
     triggerInitGrid?:Grid;
+    triggerUpdateGrid?:Grid;
 }
 
 class GridElement extends React.Component<IGridProps, {}> {
     layout:Grid;
-    //url:GridUrlConstruct;
-
-    componentWillMount() {
-    }
-
-    //constructLayoutFromUrl():Grid {
-    //    return new Grid(this.url);
-    //}
 
     addRow(position:RowPosition, row:RowUrlConstruct) {
         const newUrl = this.layout.addRow(position, row);
 
-        // This should trigger an action called requestUpdateGrid with the corresponding Id and new Row Url Constructor
         this.props.dispatch(requestUpdateGrid(this.layout.id, newUrl));
     }
 
     build() {
-        if (!this.props.layout && !this.props.triggerInitGrid)
+        if (!this.props.layout && !this.props.triggerInitGrid && !this.props.triggerUpdateGrid)
             return <div></div>;
 
-        this.layout = this.props.layout ? this.props.layout : this.props.triggerInitGrid;
+        this.layout = this.props.layout ? this.props.layout :
+            (this.props.triggerUpdateGrid ? this.props.triggerUpdateGrid : this.props.triggerInitGrid);
 
         const
             layout = this.layout,
@@ -61,13 +55,14 @@ class GridElement extends React.Component<IGridProps, {}> {
     }
 
     render() {
-        return this.props.triggerInitGrid ? this.build() : <div></div>;
+        return this.build();
     }
 }
 
 function select(state) {
     return {
-        triggerInitGrid: state.TriggerGridReducer.triggerInitGrid
+        triggerInitGrid: state.TriggerGridReducer.get('triggerInitGrid'),
+        triggerUpdateGrid: state.TriggerGridReducer.get('triggerUpdateGrid')
     };
 }
 

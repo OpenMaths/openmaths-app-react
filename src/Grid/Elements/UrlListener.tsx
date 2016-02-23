@@ -5,9 +5,9 @@ import { tinyActions } from 'redux-tiny-router'
 
 import { Grid, GridUrlConstruct } from '../Components/Grid'
 import { Row, RowUrlConstruct } from '../Components/Row'
-import { Column, ColumnConstructor } from '../Components/Column'
+import { Column, ColumnUrlConstruct, ColumnConstructor } from '../Components/Column'
 
-import { triggerInitGrid } from '../Actions'
+import { triggerInitGrid, triggerUpdateGrid } from '../Actions'
 import { RowPosition, IRequestUpdateGrid } from '../DataModel'
 import { encryptGridUrl, decryptGridUrl } from '../Url'
 
@@ -15,10 +15,11 @@ enum Action { InitialiseGrid, ReconstructGrid, ReconstructRow, ReconstructColumn
 
 interface IUrlListenerProps {
     dispatch?: Redux.Dispatch;
-    GridUrlConstructor?:string;
+    //GridUrlConstructor?:string;
 
-    requestUpdateGrid?:IRequestUpdateGrid;
+    // State => Props
     requestInitGrid?:GridUrlConstruct;
+    requestUpdateGrid?:IRequestUpdateGrid;
 }
 
 class UrlListener extends React.Component<IUrlListenerProps, {}> {
@@ -42,14 +43,17 @@ class UrlListener extends React.Component<IUrlListenerProps, {}> {
     // should only subscribe to their own entities of the state, and only re-render themselves if deemed necessary
     //}
 
-    act(action:Action, url:GridUrlConstruct) {
+    act(action:Action, urlConstruct:GridUrlConstruct, id?:string) {
         switch (action) {
             case Action.InitialiseGrid:
-                const G = new Grid(url);
-                this.props.dispatch(triggerInitGrid(G));
+                const G_i = new Grid(urlConstruct);
+                this.props.dispatch(triggerInitGrid(G_i));
 
                 break;
             case Action.ReconstructGrid:
+                const G_r = new Grid(urlConstruct);
+                this.props.dispatch(triggerUpdateGrid(G_r));
+
                 break;
             case Action.ReconstructRow:
                 //const R = new Row(this.url);
@@ -63,6 +67,10 @@ class UrlListener extends React.Component<IUrlListenerProps, {}> {
     }
 
     componentWillReceiveProps(newProps:IUrlListenerProps) {
+        if (newProps.requestUpdateGrid) {
+            this.act(Action.ReconstructGrid, newProps.requestUpdateGrid.url, newProps.requestUpdateGrid.id);
+        }
+
         if (newProps.requestInitGrid) {
             this.act(Action.InitialiseGrid, newProps.requestInitGrid);
         }
@@ -75,9 +83,9 @@ class UrlListener extends React.Component<IUrlListenerProps, {}> {
 
 function select(state) {
     return {
-        GridUrlConstructor: state.router.params.GridUrlConstructor,
-        requestInitGrid: state.RequestGridReducer.requestInitGrid,
-        requestUpdateGrid: state.RequestGridReducer.requestUpdateGrid
+        //GridUrlConstructor: state.router.params.GridUrlConstructor,
+        requestInitGrid: state.RequestGridReducer.get('requestInitGrid'),
+        requestUpdateGrid: state.RequestGridReducer.get('requestUpdateGrid'),
     };
 }
 

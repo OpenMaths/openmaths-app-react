@@ -1,5 +1,5 @@
-import { Grid, GridUrlConstruct } from './Components/Grid';
-import { RowUrlConstruct } from './Components/Row';
+import { Grid, GridUrlConstruct } from './Components/Grid'
+import { RowUrlConstruct } from './Components/Row'
 
 export enum RowPosition {Above, Below}
 export enum ColumnPosition {Prepend, Append}
@@ -18,8 +18,8 @@ export class RequestGridState {
     requestUpdateColumn;
 
     constructor(requestInitGrid?:GridUrlConstruct, requestUpdateGrid?:IRequestUpdateGrid) {
-        this.requestInitGrid = requestInitGrid;
-        this.requestUpdateGrid = requestUpdateGrid;
+        this.requestInitGrid = requestInitGrid ? requestInitGrid : null;
+        this.requestUpdateGrid = requestUpdateGrid ? requestUpdateGrid : null;
     }
 }
 
@@ -30,7 +30,8 @@ export class TriggerGridState {
     triggerUpdateRow;
     triggerUpdateColumn;
 
-    constructor(triggerInitGrid?:Grid) {
-        this.triggerInitGrid = triggerInitGrid;
+    constructor(triggerInitGrid?:Grid, triggerUpdateGrid?:Grid) {
+        this.triggerInitGrid = triggerInitGrid ? triggerInitGrid : null;
+        this.triggerUpdateGrid = triggerUpdateGrid ? triggerInitGrid : null;
     }
 }

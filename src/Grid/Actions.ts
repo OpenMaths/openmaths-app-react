@@ -29,3 +29,11 @@ export function requestUpdateGrid(id:string, url:GridUrlConstruct) {
         requestUpdateGrid: data
     };
 }
+
+export const TRIGGER_UPDATE_GRID = 'TRIGGER_UPDATE_GRID';
+export function triggerUpdateGrid(grid:Grid) {
+    return {
+        type: TRIGGER_UPDATE_GRID,
+        triggerUpdateGrid: grid
+    };
+}
