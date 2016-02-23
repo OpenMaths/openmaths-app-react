@@ -15,7 +15,7 @@ export class Grid {
     children:Row[];
     constructInput:GridUrlConstruct;
 
-    constructor(input:GridUrlConstruct) {
+    constructor(input:GridUrlConstruct, initId?:string) {
         if (!input || !_.isObject(input) || _.isArray(input))
             throw new TypeError('The input of Grid needs to be a valid Object');
 
@@ -24,10 +24,15 @@ export class Grid {
         if (keys.length !== 1)
             throw new RangeError('Grid can only have one key, e.g. be of format {key: {...rows}}');
 
-        this.id = _.first(keys).toString();
-        this.constructInput = input;
+        const
+            inputId = _.first(keys).toString(),
+            rowsInput = input[inputId];
 
-        const rowsInput = input[this.id];
+        this.id = initId ? initId : inputId;
+
+        // Reconstruct the input with correct identifier
+        this.constructInput = {};
+        this.constructInput[this.id] = rowsInput;
 
         if (!rowsInput || !_.isArray(rowsInput))
             throw new TypeError('The input for instantiating Grid\'s rows needs to be a list of valid RowUrlConstruct objects');

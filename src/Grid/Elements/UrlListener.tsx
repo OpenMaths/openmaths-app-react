@@ -43,7 +43,7 @@ class UrlListener extends React.Component<IUrlListenerProps, {}> {
     // should only subscribe to their own entities of the state, and only re-render themselves if deemed necessary
     //}
 
-    act(action:Action, urlConstruct:GridUrlConstruct, id?:string) {
+    act(action:Action, urlConstruct:GridUrlConstruct, initId?:string) {
         switch (action) {
             case Action.InitialiseGrid:
                 const G_i = new Grid(urlConstruct);
@@ -51,7 +51,7 @@ class UrlListener extends React.Component<IUrlListenerProps, {}> {
 
                 break;
             case Action.ReconstructGrid:
-                const G_r = new Grid(urlConstruct);
+                const G_r = new Grid(urlConstruct, initId);
                 this.props.dispatch(triggerUpdateGrid(G_r));
 
                 break;

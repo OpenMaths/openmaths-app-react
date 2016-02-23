@@ -13,8 +13,9 @@ export interface ColumnUrlConstruct {
 export class Column {
     id:string;
     child:UoI|Grid;
+    constructInput:ColumnUrlConstruct;
 
-    constructor(input:ColumnUrlConstruct) {
+    constructor(input:ColumnUrlConstruct, initId?:string) {
         if (!input || !_.isObject(input) || _.isArray(input))
             throw new TypeError('The input of Column needs to be a valid Object');
 
@@ -23,11 +24,20 @@ export class Column {
         if (keys.length !== 1)
             throw new RangeError('Column can only have one key, e.g. be of format {column: ...}');
 
-        this.id = _.first(keys).toString();
+        const
+            inputId = _.first(keys).toString(),
+            content = input[inputId];
 
-        const content = input[this.id];
+        this.id = initId ? initId : inputId;
+
+        // Reconstruct the input with correct identifier
+        this.constructInput = {};
+        this.constructInput[this.id] = content;
 
         this.child = (!content || _.isString(content)) ? new UoI(content) : new Grid(content);
+
+        if (initId)
+            this.id = initId;
     };
 
     // @TODO more unit tests

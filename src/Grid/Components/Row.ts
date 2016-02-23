@@ -14,7 +14,7 @@ export class Row {
     children:Column[];
     constructInput:RowUrlConstruct;
 
-    constructor(input:RowUrlConstruct) {
+    constructor(input:RowUrlConstruct, initId?:string) {
         if (!input || !_.isObject(input) || _.isArray(input))
             throw new TypeError('The input of Row needs to be a valid Object');
 
@@ -23,10 +23,15 @@ export class Row {
         if (keys.length !== 1)
             throw new RangeError('Row can only have one key, e.g. be of format {row: {...columns}}');
 
-        this.id = _.first(keys).toString();
-        this.constructInput = input;
+        const
+            inputId = _.first(keys).toString(),
+            columnsInput = input[inputId];
 
-        const columnsInput = input[this.id];
+        this.id = initId ? initId : inputId;
+
+        // Reconstruct the input with correct identifier
+        this.constructInput = {};
+        this.constructInput[this.id] = columnsInput;
 
         if (!columnsInput || !_.isArray(columnsInput))
             throw new TypeError('The input for instantiating Row\'s columns needs to be a list of valid ColumnUrlConstruct objects');

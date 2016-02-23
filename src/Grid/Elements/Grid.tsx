@@ -30,21 +30,32 @@ class GridElement extends React.Component<IGridProps, {}> {
         this.props.dispatch(requestUpdateGrid(this.layout.id, newUrl));
     }
 
+    shouldComponentUpdate(nextProps:IGridProps) {
+        // If triggerUpdateGrid has been mutated, only update the component if the id of this instance matches
+        if (nextProps && nextProps.triggerUpdateGrid) {
+            return this.layout.id == nextProps.triggerUpdateGrid.id;
+        }
+
+        return true;
+    }
+
     build() {
         if (!this.props.layout && !this.props.triggerInitGrid && !this.props.triggerUpdateGrid)
             return <div></div>;
 
-        this.layout = this.props.layout ? this.props.layout :
-            (this.props.triggerUpdateGrid ? this.props.triggerUpdateGrid : this.props.triggerInitGrid);
+        // Updating is a priority, then constructing from a given layout, then initialising
+        this.layout = this.props.triggerUpdateGrid ? this.props.triggerUpdateGrid :
+            (this.props.layout ? this.props.layout : this.props.triggerInitGrid);
 
         const
             layout = this.layout,
-            numberOfRows = layout.children.length;
+            numberOfRows = layout.children.length,
+            addRow = this.addRow.bind(this);
 
         if (layout instanceof Grid) {
             return (
                 <div className={'grid rows-' + numberOfRows} key={layout.id}>
-                    {layout.children.map((row:Row) => <RowElement addRow={this.addRow.bind(this)} layout={row}
+                    {layout.children.map((row:Row) => <RowElement addRow={addRow} layout={row}
                                                                   key={row.id}/>)}
                 </div>
             );
