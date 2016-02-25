@@ -6,8 +6,8 @@ import { Column, ColumnConstructor, ColumnUrlConstruct } from './Column'
 describe('Row component', () => {
     it('should parse its input correctly', () => {
         const
-            columns = [Column.construct(ColumnConstructor.Empty, null), Column.construct(ColumnConstructor.Empty, null), Column.construct(ColumnConstructor.Empty, null)],
-            rowUrl = Row.construct(columns);
+            columns = [Column.constructUrl(ColumnConstructor.Empty, null), Column.constructUrl(ColumnConstructor.Empty, null), Column.constructUrl(ColumnConstructor.Empty, null)],
+            rowUrl = Row.constructUrl(columns);
 
         const RowComponent = new Row(rowUrl);
 
@@ -22,8 +22,8 @@ describe('Row component', () => {
 
     it('should correctly construct a url identifier', () => {
         const
-            columns = [Column.construct(ColumnConstructor.Empty, null)],
-            url = Row.construct(columns);
+            columns = [Column.constructUrl(ColumnConstructor.Empty, null)],
+            url = Row.constructUrl(columns);
 
         _.forEach(url, columns => expect(_.isArray(columns)).toBe(true));
     });

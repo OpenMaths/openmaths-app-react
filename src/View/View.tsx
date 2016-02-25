@@ -16,19 +16,13 @@ interface IViewProps {
 }
 
 class View extends React.Component<IViewProps, {}> {
-    componentDidMount() {
-        // @TODO this is here only for testing purposes, it creates a sample recursive grid with empty contents
-
-
-        //
-        //this.props.dispatch(tinyActions.navigateTo('/board/' + encryptGridUrl(gridUrl)));
-    }
+    //this.props.dispatch(tinyActions.navigateTo('/board/' + encryptGridUrl(gridUrl)));
 
     render() {
         const
-            columnsUrl = [Column.construct(ColumnConstructor.Content, Grid.constructEmpty())],
-            rowsUrl = [Row.construct(columnsUrl)],
-            gridUrl = Grid.construct(rowsUrl);
+            columnsUrl = [Column.constructUrl(ColumnConstructor.Content, Grid.constructEmptyUrl())],
+            rowsUrl = [Row.constructUrl(columnsUrl)],
+            gridUrl = Grid.constructUrl(rowsUrl);
 
         const newGrid = new Grid(gridUrl);
 

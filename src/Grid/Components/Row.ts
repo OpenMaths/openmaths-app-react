@@ -14,7 +14,7 @@ export class Row {
     children:Column[];
     constructInput:RowUrlConstruct;
 
-    constructor(input:RowUrlConstruct, initId?:string) {
+    constructor(input:RowUrlConstruct) {
         if (!input || !_.isObject(input) || _.isArray(input))
             throw new TypeError('The input of Row needs to be a valid Object');
 
@@ -27,7 +27,7 @@ export class Row {
             inputId = _.first(keys).toString(),
             columnsInput = input[inputId];
 
-        this.id = initId ? initId : inputId;
+        this.id = inputId;
 
         // Reconstruct the input with correct identifier
         this.constructInput = {};
@@ -43,8 +43,7 @@ export class Row {
     }
 
     // @TODO more unit tests
-    // Change to constructURL
-    static construct(columns:ColumnUrlConstruct[]):RowUrlConstruct {
+    static constructUrl(columns:ColumnUrlConstruct[]):RowUrlConstruct {
         if (!_.isArray(columns))
             throw new TypeError('The input for constructing Row URL can only be a list of valid ColumnUrlConstruct objects');
 
@@ -59,7 +58,14 @@ export class Row {
         return resultingObject;
     }
 
-    addColumnN(position:ColumnPosition, column:Column):Row {
+    static constructEmptyUrl():RowUrlConstruct {
+        const
+            columns = [Column.constructEmptyUrl()];
+
+        return Row.constructUrl(columns);
+    }
+
+    addColumn(position:ColumnPosition, column:Column):Row {
         switch (position) {
             case ColumnPosition.Prepend:
                 this.children.unshift(column);
@@ -70,20 +76,5 @@ export class Row {
         }
 
         return this;
-    }
-
-    addColumn(position:ColumnPosition, column:ColumnUrlConstruct):RowUrlConstruct {
-        let columns = _.clone(this.constructInput[this.id]);
-
-        switch (position) {
-            case ColumnPosition.Prepend:
-                columns.unshift(column);
-                break;
-            case ColumnPosition.Append:
-                columns.push(column);
-                break;
-        }
-
-        return Row.construct(columns);
     }
 }

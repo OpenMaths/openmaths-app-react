@@ -3,9 +3,9 @@ import * as _ from 'lodash'
 import { connect } from 'react-redux'
 import { tinyActions } from 'redux-tiny-router'
 
-import { Grid, GridUrlConstruct } from '../Components/Grid'
-import { Row, RowUrlConstruct } from '../Components/Row'
-import { Column, ColumnUrlConstruct, ColumnConstructor } from '../Components/Column'
+import { Grid } from '../Components/Grid'
+import { Row } from '../Components/Row'
+import { Column } from '../Components/Column'
 
 import { requestUpdateGrid } from '../Actions'
 import { RowPosition } from '../DataModel'
@@ -36,8 +36,8 @@ class GridElement extends React.Component<IGridProps, {}> {
 
     addRow(position:RowPosition) {
         const
-            newRow = new Row(Row.construct([Column.construct(ColumnConstructor.Empty, null)])),
-            newGrid = this.layout.addRowN(position, newRow);
+            newRow = new Row(Row.constructEmptyUrl()),
+            newGrid = this.layout.addRow(position, newRow);
 
         this.props.dispatch(requestUpdateGrid(newGrid));
     }

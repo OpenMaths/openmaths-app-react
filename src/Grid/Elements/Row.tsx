@@ -1,9 +1,9 @@
 import * as React from 'react'
 import * as _ from 'lodash'
 
-import { Grid, GridUrlConstruct } from '../Components/Grid'
-import { Row, RowUrlConstruct } from '../Components/Row'
-import { Column, ColumnUrlConstruct, ColumnConstructor } from '../Components/Column'
+import { Grid } from '../Components/Grid'
+import { Row } from '../Components/Row'
+import { Column } from '../Components/Column'
 
 import { ColumnPosition, RowPosition } from '../DataModel'
 import ColumnElement from './Column'
@@ -19,8 +19,8 @@ export default class RowElement extends React.Component<IRowProps, {}> {
 
     addColumn(position:ColumnPosition) {
         const
-            newColumn = new Column(Column.construct(ColumnConstructor.Empty, null)),
-            newRow = this.layout.addColumnN(position, newColumn);
+            newColumn = new Column(Column.constructEmptyUrl()),
+            newRow = this.layout.addColumn(position, newColumn);
 
         this.props.updateGrid(newRow);
     }

@@ -7,9 +7,8 @@ import { Column, ColumnConstructor } from './Column'
 describe('Grid component', () => {
     it('should parse its input correctly', () => {
         const
-            columns = [Column.construct(ColumnConstructor.Empty, null)],
-            rows = [Row.construct(columns), Row.construct(columns)],
-            gridUrl = Grid.construct(rows);
+            rows = [Row.constructEmptyUrl(), Row.constructEmptyUrl()],
+            gridUrl = Grid.constructUrl(rows);
 
         const GridComponent = new Grid(gridUrl);
 
@@ -24,10 +23,8 @@ describe('Grid component', () => {
 
     it('should correctly construct a url identifier', () => {
         const
-            columns = [Column.construct(ColumnConstructor.Empty, null)],
-            rows = [Row.construct(columns)],
-            url = Grid.construct(rows);
+            gridUrl = Grid.constructEmptyUrl();
 
-        _.forEach(url, rows => expect(_.isArray(rows)).toBe(true));
+        _.forEach(gridUrl, rows => expect(_.isArray(rows)).toBe(true));
     });
 });

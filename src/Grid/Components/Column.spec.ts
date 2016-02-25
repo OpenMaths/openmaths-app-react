@@ -8,7 +8,7 @@ import UoI from '../../UoI/UoI'
 describe('Column component', () => {
     it('should parse its input correctly', () => {
         // @TODO test null scenario too
-        const columnUrl = Column.construct(ColumnConstructor.Content, 'identifier');
+        const columnUrl = Column.constructUrl(ColumnConstructor.Content, 'identifier');
 
         const ColumnComponent = new Column(columnUrl);
 
@@ -18,7 +18,7 @@ describe('Column component', () => {
     });
 
     it('should parse its recurring input correctly', () => {
-        const columnUrl = Column.construct(ColumnConstructor.Content, Grid.constructEmpty());
+        const columnUrl = Column.constructUrl(ColumnConstructor.Content, Grid.constructEmptyUrl());
 
         const ColumnComponent = new Column(columnUrl);
 
@@ -29,7 +29,7 @@ describe('Column component', () => {
 
     it('should correctly construct an "empty column" url identifier', () => {
         const
-            obj = Column.construct(ColumnConstructor.Empty, null),
+            obj = Column.constructUrl(ColumnConstructor.Empty, null),
             val = _.first(_.values(obj));
 
         expect(val).toBeNull();
@@ -37,7 +37,7 @@ describe('Column component', () => {
 
     it('should correctly construct a "column with content" url identifier', () => {
         const
-            obj = Column.construct(ColumnConstructor.Content, 'identifier'),
+            obj = Column.constructUrl(ColumnConstructor.Content, 'identifier'),
             val = _.first(_.values(obj));
 
         expect(val).toEqual('identifier');

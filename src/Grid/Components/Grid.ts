@@ -15,7 +15,7 @@ export class Grid {
     children:Row[];
     constructInput:GridUrlConstruct;
 
-    constructor(input:GridUrlConstruct, initId?:string) {
+    constructor(input:GridUrlConstruct) {
         if (!input || !_.isObject(input) || _.isArray(input))
             throw new TypeError('The input of Grid needs to be a valid Object');
 
@@ -28,7 +28,7 @@ export class Grid {
             inputId = _.first(keys).toString(),
             rowsInput = input[inputId];
 
-        this.id = initId ? initId : inputId;
+        this.id = inputId;
 
         // Reconstruct the input with correct identifier
         this.constructInput = {};
@@ -44,8 +44,7 @@ export class Grid {
     }
 
     // @TODO more unit tests
-    // Change to constructURL
-    static construct(rows:RowUrlConstruct[]):GridUrlConstruct {
+    static constructUrl(rows:RowUrlConstruct[]):GridUrlConstruct {
         if (!_.isArray(rows))
             throw new TypeError('The input for constructing Grid URL can only be a list of valid RowUrlConstruct objects');
 
@@ -60,14 +59,12 @@ export class Grid {
         return resultingObject;
     }
 
-
     // @TODO replicate for row and column
-    static constructEmpty():GridUrlConstruct {
+    static constructEmptyUrl():GridUrlConstruct {
         const
-            columns = [Column.construct(ColumnConstructor.Empty, null)],
-            rows = [Row.construct(columns)];
+            rows = [Row.constructEmptyUrl()];
 
-        return Grid.construct(rows);
+        return Grid.constructUrl(rows);
     }
 
     static parseUrl(url:string):GridUrlConstruct {
@@ -83,7 +80,7 @@ export class Grid {
         return parsedUrl;
     }
 
-    addRowN(position:RowPosition, row:Row):Grid {
+    addRow(position:RowPosition, row:Row):Grid {
         switch (position) {
             case RowPosition.Above:
                 this.children.unshift(row);
@@ -94,20 +91,5 @@ export class Grid {
         }
 
         return this;
-    }
-
-    addRow(position:RowPosition, row:RowUrlConstruct):GridUrlConstruct {
-        let rows = _.clone(this.constructInput[this.id]);
-
-        switch (position) {
-            case RowPosition.Above:
-                rows.unshift(row);
-                break;
-            case RowPosition.Below:
-                rows.push(row);
-                break;
-        }
-
-        return Grid.construct(rows);
     }
 }

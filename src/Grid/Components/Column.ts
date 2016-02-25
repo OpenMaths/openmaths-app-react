@@ -15,7 +15,7 @@ export class Column {
     child:UoI|Grid;
     constructInput:ColumnUrlConstruct;
 
-    constructor(input:ColumnUrlConstruct, initId?:string) {
+    constructor(input:ColumnUrlConstruct) {
         if (!input || !_.isObject(input) || _.isArray(input))
             throw new TypeError('The input of Column needs to be a valid Object');
 
@@ -28,21 +28,17 @@ export class Column {
             inputId = _.first(keys).toString(),
             content = input[inputId];
 
-        this.id = initId ? initId : inputId;
+        this.id = inputId;
 
         // Reconstruct the input with correct identifier
         this.constructInput = {};
         this.constructInput[this.id] = content;
 
         this.child = (!content || _.isString(content)) ? new UoI(content) : new Grid(content);
-
-        if (initId)
-            this.id = initId;
     };
 
     // @TODO more unit tests
-    // Change to constructURL
-    static construct(type:ColumnConstructor, content:string|GridUrlConstruct):ColumnUrlConstruct {
+    static constructUrl(type:ColumnConstructor, content:string|GridUrlConstruct):ColumnUrlConstruct {
         const id = shortid.generate();
 
         let resultingObject:ColumnUrlConstruct = {};
@@ -57,5 +53,9 @@ export class Column {
         }
 
         return resultingObject;
+    }
+
+    static constructEmptyUrl():ColumnUrlConstruct {
+        return Column.constructUrl(ColumnConstructor.Empty, null);
     }
 }

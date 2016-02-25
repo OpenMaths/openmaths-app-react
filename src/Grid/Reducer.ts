@@ -15,12 +15,10 @@ export function RequestGridReducer(state:Immutable.Map<string,Grid|Date>, action
 
     switch (action.type) {
         case REQUEST_UPDATE_GRID:
-            const newState = state.merge({
+            return state.merge({
                 lastUpdated: new Date(),
                 requestUpdateGrid: action.requestUpdateGrid
             });
-
-            return newState;
         default:
             return state;
     }
