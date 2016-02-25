@@ -59,25 +59,11 @@ export class Grid {
         return resultingObject;
     }
 
-    // @TODO replicate for row and column
     static constructEmptyUrl():GridUrlConstruct {
         const
             rows = [Row.constructEmptyUrl()];
 
         return Grid.constructUrl(rows);
-    }
-
-    static parseUrl(url:string):GridUrlConstruct {
-        let parsedUrl;
-
-        try {
-            parsedUrl = JSON.parse(url);
-        } catch (Exception) {
-            console.error(Exception);
-            parsedUrl = null;
-        }
-
-        return parsedUrl;
     }
 
     addRow(position:RowPosition, row:Row):Grid {

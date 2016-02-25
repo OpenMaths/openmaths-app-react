@@ -20,6 +20,8 @@ declare module 'redux-tiny-router' {
     }
 
     class tinyActions {
-        static navigateTo(url?:string, data?:any);
+        static navigateTo(url?:string, data?:any, options?:any);
+        static preventedNavigationAttempted(url?:string, data?:any, options?:any);
+        static changeUrl(url?:string, data?:any, options?:any);
     }
 }

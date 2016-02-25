@@ -12,6 +12,7 @@ import GridElement from './Grid'
 interface IColumnProps {
     layout:Column;
     addColumn:(position:ColumnPosition) => void;
+    splitColumn:(operator:SplitOperator, columnId:string, uoi:UoI) => void;
 }
 
 export default class ColumnElement extends React.Component<IColumnProps, {}> {
@@ -27,8 +28,10 @@ export default class ColumnElement extends React.Component<IColumnProps, {}> {
         if (child instanceof Grid) {
             return (
                 <div className="column">
+                    <div className="controls">
                     <strong onClick={() => this.props.addColumn(ColumnPosition.Append)}>Append Column</strong>
                     <strong onClick={() => this.props.addColumn(ColumnPosition.Prepend)}>Prepend Column</strong>
+                    </div>
 
                     <GridElement layout={child}/>
                 </div>
@@ -36,8 +39,12 @@ export default class ColumnElement extends React.Component<IColumnProps, {}> {
         } else if (child instanceof UoI) {
             return (
                 <div className="column">
+                    <div className="controls">
                     <strong onClick={() => this.props.addColumn(ColumnPosition.Append)}>Append Column</strong>
                     <strong onClick={() => this.props.addColumn(ColumnPosition.Prepend)}>Prepend Column</strong>
+                    <strong onClick={() => this.props.splitColumn(SplitOperator.Horizontally, layout.id, child)}>Split Horizontally</strong>
+                    <strong onClick={() => this.props.splitColumn(SplitOperator.Vertically, layout.id, child)}>Split Vertically</strong>
+                    </div>
 
                     <div>UoI</div>
                 </div>

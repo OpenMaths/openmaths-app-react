@@ -1,8 +1,5 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { tinyActions } from 'redux-tiny-router'
-
-//import { encryptGridUrl } from '../Grid/Url'
 
 import { Grid, GridUrlConstruct } from '../Grid/Components/Grid'
 import { Row, RowUrlConstruct } from '../Grid/Components/Row'
@@ -16,13 +13,13 @@ interface IViewProps {
 }
 
 class View extends React.Component<IViewProps, {}> {
-    //this.props.dispatch(tinyActions.navigateTo('/board/' + encryptGridUrl(gridUrl)));
-
     render() {
-        const
-            columnsUrl = [Column.constructUrl(ColumnConstructor.Content, Grid.constructEmptyUrl())],
-            rowsUrl = [Row.constructUrl(columnsUrl)],
-            gridUrl = Grid.constructUrl(rowsUrl);
+        //const
+        //    columnsUrl = [Column.constructUrl(ColumnConstructor.Content, Grid.constructEmptyUrl())],
+        //    rowsUrl = [Row.constructUrl(columnsUrl)],
+        //    gridUrl = Grid.constructUrl(rowsUrl);
+
+        const gridUrl = Grid.constructEmptyUrl();
 
         const newGrid = new Grid(gridUrl);
 

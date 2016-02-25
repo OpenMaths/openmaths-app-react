@@ -77,6 +77,15 @@ export class Row {
         return this;
     }
 
+    updateColumn(updateColumnId:string, newColumn:Column):Row {
+        _.forEach(this.children, (column:Column, key:number) => {
+            if (column.id == updateColumnId)
+                this.children[key] = newColumn;
+        });
+
+        return this;
+    }
+
     getConstructUrl():RowUrlConstruct {
         // go through all the children, concatenate into a single list and construct a row
         const rowUrl:ColumnUrlConstruct[] = _.map(this.children, (column:Column) => column.getConstructUrl());

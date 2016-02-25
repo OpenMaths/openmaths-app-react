@@ -53,7 +53,7 @@ class GridElement extends React.Component<IGridProps, {}> {
         if (this.props.parent) {
             const encodedUrl = encodeGridUrl(this.layout.getConstructUrl());
 
-            console.info(encodedUrl);
+            this.props.dispatch(tinyActions.changeUrl('/board/' + encodedUrl, {scroll: true}));
         }
 
         if (requestUpdateGrid) {
@@ -77,9 +77,9 @@ class GridElement extends React.Component<IGridProps, {}> {
 
         if (layout instanceof Grid) {
             return (
-                <div className={'grid rows-' + numberOfRows} key={layout.id}>
+                <div className={'grid rows-' + numberOfRows + (this.props.parent ? ' parent' : '')} key={layout.id}>
                     {layout.children.map((row:Row) => <RowElement addRow={addRow} layout={row}
-                                                                  key={row.id} updateGrid={updateGrid}/>)}
+                                                                  updateGrid={updateGrid} key={row.id}/>)}
                 </div>
             );
         } else {
