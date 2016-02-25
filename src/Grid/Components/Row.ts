@@ -77,6 +77,7 @@ export class Row {
         return this;
     }
 
+    // @TODO unit test this method PLEASEEEE, it's not difficult
     updateColumn(updateColumnId:string, newColumn:Column):Row {
         _.forEach(this.children, (column:Column, key:number) => {
             if (column.id == updateColumnId)

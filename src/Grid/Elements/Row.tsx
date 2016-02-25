@@ -10,13 +10,13 @@ import { Column, ColumnConstructor } from '../Components/Column'
 import { ColumnPosition, RowPosition, SplitOperator } from '../DataModel'
 import ColumnElement from './Column'
 
-interface IRowProps {
+interface IRowElementProps {
     layout:Row;
     addRow:(position:RowPosition) => void;
     updateGrid:(newRow:Row) => void;
 }
 
-export default class RowElement extends React.Component<IRowProps, {}> {
+export default class RowElement extends React.Component<IRowElementProps, {}> {
     layout:Row;
 
     addColumn(position:ColumnPosition) {
@@ -66,19 +66,16 @@ export default class RowElement extends React.Component<IRowProps, {}> {
         const
             layout = this.layout,
             numberOfColumns = layout.children.length,
+            addRow = this.props.addRow,
             addColumn = this.addColumn.bind(this),
             splitColumn = this.splitColumn.bind(this);
 
         if (layout instanceof Row) {
             return (
                 <div className={'row columns-' + numberOfColumns}>
-                    <div className="controls">
-                        <strong onClick={() => this.props.addRow(RowPosition.Above)}>Insert Row Above</strong>
-                        <strong onClick={() => this.props.addRow(RowPosition.Below)}>Insert Row Below</strong>
-                    </div>
-
                     {layout.children.map((column:Column) => <ColumnElement addColumn={addColumn} layout={column}
-                                                                           splitColumn={splitColumn} key={column.id}/>)}
+                                                                           addRow={addRow} splitColumn={splitColumn}
+                                                                           key={column.id}/>)}
                 </div>
             );
         } else {

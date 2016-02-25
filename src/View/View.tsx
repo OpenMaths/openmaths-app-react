@@ -14,12 +14,10 @@ interface IViewProps {
 
 class View extends React.Component<IViewProps, {}> {
     render() {
-        //const
-        //    columnsUrl = [Column.constructUrl(ColumnConstructor.Content, Grid.constructEmptyUrl())],
-        //    rowsUrl = [Row.constructUrl(columnsUrl)],
-        //    gridUrl = Grid.constructUrl(rowsUrl);
-
-        const gridUrl = Grid.constructEmptyUrl();
+        const
+            columnsUrl = [Column.constructUrl(ColumnConstructor.Content, 'Test Content Identifier'), Column.constructEmptyUrl()],
+            rowsUrl = [Row.constructUrl(columnsUrl)],
+            gridUrl = Grid.constructUrl(rowsUrl);
 
         const newGrid = new Grid(gridUrl);
 

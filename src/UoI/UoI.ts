@@ -1,6 +1,6 @@
 export default class UoI {
     id:string;
-    position;
+    position:ClientRect;
 
     constructor(input) {
         this.id = input;

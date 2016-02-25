@@ -53,7 +53,7 @@ class GridElement extends React.Component<IGridProps, {}> {
         if (this.props.parent) {
             const encodedUrl = encodeGridUrl(this.layout.getConstructUrl());
 
-            this.props.dispatch(tinyActions.changeUrl('/board/' + encodedUrl, {scroll: true}));
+            this.props.dispatch(tinyActions.changeUrl('/board/' + encodedUrl));
         }
 
         if (requestUpdateGrid) {
