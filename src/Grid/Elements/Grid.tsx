@@ -13,50 +13,64 @@ import { RowPosition } from '../DataModel'
 import RowElement from './Row'
 
 interface IGridProps {
-    dispatch?: Redux.Dispatch;
-    layout?:Grid;
+    layout:Grid;
 
     // State => Props
-    triggerInitGrid?:Grid;
-    triggerUpdateGrid?:Grid;
+    dispatch?:Redux.Dispatch;
+    GridState?:Immutable.Map<string,Grid>;
 }
 
 class GridElement extends React.Component<IGridProps, {}> {
     layout:Grid;
 
-    addRow(position:RowPosition, row:RowUrlConstruct) {
-        const newUrl = this.layout.addRow(position, row);
+    updateGrid(newRow:Row) {
+        _.forEach(this.layout.children, (row:Row, key:number) => {
+            if (row.id == newRow.id)
+                this.layout.children[key] = newRow;
+        });
 
-        this.props.dispatch(requestUpdateGrid(this.layout.id, newUrl));
+        const newGrid = this.layout;
+
+        this.props.dispatch(requestUpdateGrid(newGrid));
+    }
+
+    addRow(position:RowPosition) {
+        const
+            newRow = new Row(Row.construct([Column.construct(ColumnConstructor.Empty, null)])),
+            newGrid = this.layout.addRowN(position, newRow);
+
+        this.props.dispatch(requestUpdateGrid(newGrid));
     }
 
     shouldComponentUpdate(nextProps:IGridProps) {
-        // If triggerUpdateGrid has been mutated, only update the component if the id of this instance matches
-        if (nextProps && nextProps.triggerUpdateGrid) {
-            return this.layout.id == nextProps.triggerUpdateGrid.id;
+        let shouldUpdate = true;
+
+        const
+            requestUpdateGrid:Grid = nextProps.GridState.get('requestUpdateGrid');
+
+        if (requestUpdateGrid) {
+            shouldUpdate = requestUpdateGrid.id == this.layout.id;
+
+            if (shouldUpdate) this.layout = requestUpdateGrid;
         }
 
-        return true;
+        return shouldUpdate;
     }
 
     build() {
-        if (!this.props.layout && !this.props.triggerInitGrid && !this.props.triggerUpdateGrid)
-            return <div></div>;
-
-        // Updating is a priority, then constructing from a given layout, then initialising
-        this.layout = this.props.triggerUpdateGrid ? this.props.triggerUpdateGrid :
-            (this.props.layout ? this.props.layout : this.props.triggerInitGrid);
+        this.layout = this.layout ? this.layout : this.props.layout;
 
         const
             layout = this.layout,
             numberOfRows = layout.children.length,
-            addRow = this.addRow.bind(this);
+            addRow = this.addRow.bind(this),
+            updateGrid = this.updateGrid.bind(this);
 
         if (layout instanceof Grid) {
             return (
                 <div className={'grid rows-' + numberOfRows} key={layout.id}>
                     {layout.children.map((row:Row) => <RowElement addRow={addRow} layout={row}
-                                                                  key={row.id}/>)}
+                                                                  key={row.id} updateGrid={updateGrid}/>)}
                 </div>
             );
         } else {
@@ -72,8 +86,7 @@ class GridElement extends React.Component<IGridProps, {}> {
 
 function select(state) {
     return {
-        triggerInitGrid: state.TriggerGridReducer.get('triggerInitGrid'),
-        triggerUpdateGrid: state.TriggerGridReducer.get('triggerUpdateGrid')
+        GridState: state.RequestGridReducer
     };
 }
 

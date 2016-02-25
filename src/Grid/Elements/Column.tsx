@@ -3,7 +3,7 @@ import * as React from 'react'
 import Umi from '../../Umi/Umi'
 
 import { Grid } from '../Components/Grid'
-import { Column, ColumnUrlConstruct, ColumnConstructor } from '../Components/Column'
+import { Column } from '../Components/Column'
 import UoI from '../../UoI/UoI'
 
 import { ColumnPosition, SplitOperator } from '../DataModel'
@@ -11,28 +11,24 @@ import GridElement from './Grid'
 
 interface IColumnProps {
     layout:Column;
-    addColumn:(position:ColumnPosition, column:ColumnUrlConstruct) => void;
+    addColumn:(position:ColumnPosition) => void;
 }
 
 export default class ColumnElement extends React.Component<IColumnProps, {}> {
     layout:Column;
 
-    componentWillMount() {
-        this.layout = this.props.layout;
-    }
-
     build() {
-        const
-            layout = this.props.layout,
-            child = layout.child;
+        this.layout = this.props.layout;
 
-        const column = Column.construct(ColumnConstructor.Empty, null);
+        const
+            layout = this.layout,
+            child = layout.child;
 
         if (child instanceof Grid) {
             return (
                 <div className="column">
-                    <strong onClick={() => this.props.addColumn(ColumnPosition.Append, column)}>Append Column</strong>
-                    <strong onClick={() => this.props.addColumn(ColumnPosition.Prepend, column)}>Prepend Column</strong>
+                    <strong onClick={() => this.props.addColumn(ColumnPosition.Append)}>Append Column</strong>
+                    <strong onClick={() => this.props.addColumn(ColumnPosition.Prepend)}>Prepend Column</strong>
 
                     <GridElement layout={child}/>
                 </div>
@@ -40,8 +36,8 @@ export default class ColumnElement extends React.Component<IColumnProps, {}> {
         } else if (child instanceof UoI) {
             return (
                 <div className="column">
-                    <strong onClick={() => this.props.addColumn(ColumnPosition.Append, column)}>Append Column</strong>
-                    <strong onClick={() => this.props.addColumn(ColumnPosition.Prepend, column)}>Prepend Column</strong>
+                    <strong onClick={() => this.props.addColumn(ColumnPosition.Append)}>Append Column</strong>
+                    <strong onClick={() => this.props.addColumn(ColumnPosition.Prepend)}>Prepend Column</strong>
 
                     <div>UoI</div>
                 </div>

@@ -83,6 +83,19 @@ export class Grid {
         return parsedUrl;
     }
 
+    addRowN(position:RowPosition, row:Row):Grid {
+        switch (position) {
+            case RowPosition.Above:
+                this.children.unshift(row);
+                break;
+            case RowPosition.Below:
+                this.children.push(row);
+                break;
+        }
+
+        return this;
+    }
+
     addRow(position:RowPosition, row:RowUrlConstruct):GridUrlConstruct {
         let rows = _.clone(this.constructInput[this.id]);
 

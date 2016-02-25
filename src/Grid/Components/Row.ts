@@ -59,6 +59,19 @@ export class Row {
         return resultingObject;
     }
 
+    addColumnN(position:ColumnPosition, column:Column):Row {
+        switch (position) {
+            case ColumnPosition.Prepend:
+                this.children.unshift(column);
+                break;
+            case ColumnPosition.Append:
+                this.children.push(column);
+                break;
+        }
+
+        return this;
+    }
+
     addColumn(position:ColumnPosition, column:ColumnUrlConstruct):RowUrlConstruct {
         let columns = _.clone(this.constructInput[this.id]);
 
