@@ -76,4 +76,11 @@ export class Row {
 
         return this;
     }
+
+    getConstructUrl():RowUrlConstruct {
+        // go through all the children, concatenate into a single list and construct a row
+        const rowUrl:ColumnUrlConstruct[] = _.map(this.children, (column:Column) => column.getConstructUrl());
+
+        return Row.constructUrl(rowUrl);
+    }
 }

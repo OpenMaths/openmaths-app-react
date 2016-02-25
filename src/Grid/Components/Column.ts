@@ -57,4 +57,10 @@ export class Column {
     static constructEmptyUrl():ColumnUrlConstruct {
         return Column.constructUrl(ColumnConstructor.Empty, null);
     }
+
+    getConstructUrl():ColumnUrlConstruct {
+        let child:any = this.child;
+
+        return (child instanceof Grid) ? child.getConstructUrl() : this.constructInput;
+    }
 }

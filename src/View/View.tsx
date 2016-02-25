@@ -29,7 +29,7 @@ class View extends React.Component<IViewProps, {}> {
         return (
             <div>
                 <UrlListener/>
-                <GridElement layout={newGrid}/>
+                <GridElement layout={newGrid} parent={true}/>
             </div>
         );
     }

@@ -9,11 +9,13 @@ import { Column } from '../Components/Column'
 
 import { requestUpdateGrid } from '../Actions'
 import { RowPosition } from '../DataModel'
+import { encodeGridUrl } from '../Url'
 
 import RowElement from './Row'
 
 interface IGridProps {
     layout:Grid;
+    parent?:boolean;
 
     // State => Props
     dispatch?:Redux.Dispatch;
@@ -48,10 +50,17 @@ class GridElement extends React.Component<IGridProps, {}> {
         const
             requestUpdateGrid:Grid = nextProps.GridState.get('requestUpdateGrid');
 
+        if (this.props.parent) {
+            const encodedUrl = encodeGridUrl(this.layout.getConstructUrl());
+
+            console.info(encodedUrl);
+        }
+
         if (requestUpdateGrid) {
             shouldUpdate = requestUpdateGrid.id == this.layout.id;
 
-            if (shouldUpdate) this.layout = requestUpdateGrid;
+            if (shouldUpdate)
+                this.layout = requestUpdateGrid;
         }
 
         return shouldUpdate;
