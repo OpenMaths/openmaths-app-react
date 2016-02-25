@@ -7,7 +7,6 @@ import UoI from '../../UoI/UoI'
 
 describe('Column component', () => {
     it('should parse its input correctly', () => {
-        // @TODO test null scenario too
         const columnUrl = Column.constructUrl(ColumnConstructor.Content, 'identifier');
 
         const ColumnComponent = new Column(columnUrl);

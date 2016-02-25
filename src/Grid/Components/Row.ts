@@ -42,7 +42,6 @@ export class Row {
         this.children = _.map(columnsInput, (column:ColumnUrlConstruct) => new Column(column));
     }
 
-    // @TODO more unit tests
     static constructUrl(columns:ColumnUrlConstruct[]):RowUrlConstruct {
         if (!_.isArray(columns))
             throw new TypeError('The input for constructing Row URL can only be a list of valid ColumnUrlConstruct objects');
