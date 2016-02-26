@@ -5,6 +5,7 @@
   "main": "webpack.config.js",
   "dependencies": {
     "axios": "^0.9.1",
+    "body-parser": "^1.15.0",
     "crypto-js": "^3.1.6",
     "css-loader": "^0.23.1",
     "expect.js": "^0.3.1",
@@ -51,8 +52,12 @@
   },
   "scripts": {
     "test": "",
+
     "start": "NODE_ENV=development PORT=8081 node server",
     "build": "webpack --config ./webpack.production.config.js --progress --profile --colors",
+
+    "build-server": "tsc --pretty --project restApi",
+
     "start-prod": "npm run build && NODE_ENV=production PORT=8081 forever start server.js",
     "stop-prod": "forever stop server.js"
   },

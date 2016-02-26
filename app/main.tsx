@@ -10,9 +10,7 @@ import View from './View/View'
 
 render(
     <Provider store={store}>
-        <main id="app">
-            <View/>
-        </main>
+        <View/>
     </Provider>,
     document.getElementById('OpenMathsAppContainer')
 );

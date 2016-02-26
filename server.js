@@ -8,6 +8,9 @@ const config = require('./webpack.config.js');
 const isDeveloping = process.env.NODE_ENV !== 'production';
 const port = process.env.PORT ? process.env.PORT : 8081;
 const app = express();
+const router = express.Router();
+
+require('./restApi/js/router')(app, router);
 
 if (isDeveloping) {
     const compiler = webpack(config);

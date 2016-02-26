@@ -22,10 +22,10 @@ class View extends React.Component<IViewProps, {}> {
         const newGrid = new Grid(gridUrl);
 
         return (
-            <div>
+            <main id="app">
                 <UrlListener/>
                 <GridElement layout={newGrid} parent={true}/>
-            </div>
+            </main>
         );
     }
 }

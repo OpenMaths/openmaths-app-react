@@ -34,6 +34,21 @@
     },
     "cryptojs/cryptojs.d.ts": {
       "commit": "0b4f725a96ae1e9d9451ff9d59b5bf5e1511854f"
+    },
+    "body-parser/body-parser.d.ts": {
+      "commit": "b2f665ce4156ccb1bbe7025cdeb4be5547b5ce0e"
+    },
+    "node/node.d.ts": {
+      "commit": "b2f665ce4156ccb1bbe7025cdeb4be5547b5ce0e"
+    },
+    "serve-static/serve-static.d.ts": {
+      "commit": "b2f665ce4156ccb1bbe7025cdeb4be5547b5ce0e"
+    },
+    "mime/mime.d.ts": {
+      "commit": "b2f665ce4156ccb1bbe7025cdeb4be5547b5ce0e"
+    },
+    "express/express.d.ts": {
+      "commit": "b2f665ce4156ccb1bbe7025cdeb4be5547b5ce0e"
     }
   }
 }
