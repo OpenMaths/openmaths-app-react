@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 
+import { decodeGridUrl } from '../Grid/Url'
+
 import { Grid, GridUrlConstruct } from '../Grid/Components/Grid'
 import { Row, RowUrlConstruct } from '../Grid/Components/Row'
 import { Column, ColumnConstructor } from '../Grid/Components/Column'
@@ -9,17 +11,37 @@ import GridElement from '../Grid/Elements/Grid'
 import UrlListener from '../Grid/Elements/UrlListener'
 
 interface IViewProps {
-    dispatch?: Redux.Dispatch;
+    // State => Props
+    dispatch?:Redux.Dispatch;
+    url?:string;
 }
 
 class View extends React.Component<IViewProps, {}> {
+    // @TODO refactor to return !nextProps.url; and add a comment to explain
+    shouldComponentUpdate(nextProps:IViewProps) {
+        let shouldUpdate = true;
+
+        if (nextProps.url)
+            shouldUpdate = false;
+
+        return shouldUpdate;
+    }
+
     render() {
+        let newGrid;
+
         const
-            columnsUrl = [Column.constructUrl(ColumnConstructor.Content, 'Test Content Identifier'), Column.constructEmptyUrl()],
+            columnsUrl = [Column.constructEmptyUrl(), Column.constructEmptyUrl()],
             rowsUrl = [Row.constructUrl(columnsUrl)],
             gridUrl = Grid.constructUrl(rowsUrl);
 
-        const newGrid = new Grid(gridUrl);
+        const urlComposer = this.props.url;
+
+        if (urlComposer) {
+            console.debug('About to initialise new Grid');
+            newGrid = new Grid(decodeGridUrl(urlComposer));
+        } else
+            newGrid = new Grid(gridUrl);
 
         return (
             <main id="app">
@@ -31,7 +53,9 @@ class View extends React.Component<IViewProps, {}> {
 }
 
 function select(state) {
-    return {};
+    return {
+        url: state.router.params.GridUrlConstructor
+    };
 }
 
 export default connect(select)(View);

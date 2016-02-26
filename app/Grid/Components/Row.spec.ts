@@ -83,7 +83,7 @@ describe('Row component', () => {
 
         RowComponent.updateColumn(originalColumn.id, newColumn);
 
-        RowComponent.children.forEach((column:Column, key:number) => {
+        _.forEach(RowComponent.children, (column:Column, key:number) => {
             if (column.id == newColumn.id)
                 expect(column.child instanceof Grid).toBe(true);
         });

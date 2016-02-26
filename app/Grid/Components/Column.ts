@@ -16,8 +16,10 @@ export class Column {
     constructInput:ColumnUrlConstruct;
 
     constructor(input:ColumnUrlConstruct) {
-        if (!input || !_.isObject(input) || _.isArray(input))
+        if (!input || !_.isObject(input) || _.isArray(input)) {
+            console.error(input);
             throw new TypeError('The input of Column needs to be a valid Object');
+        }
 
         const keys = _.keys(input);
 
@@ -59,8 +61,16 @@ export class Column {
     }
 
     getConstructUrl():ColumnUrlConstruct {
-        let child:any = this.child;
+        const child:any = this.child;
 
-        return (child instanceof Grid) ? child.getConstructUrl() : this.constructInput;
+        let content;
+
+        if (child instanceof Grid) {
+            content = child.getConstructUrl();
+        } else {
+            content = child.id;
+        }
+
+        return Column.constructUrl(ColumnConstructor.Content, content);
     }
 }

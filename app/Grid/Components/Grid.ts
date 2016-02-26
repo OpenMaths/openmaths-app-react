@@ -14,10 +14,13 @@ export class Grid {
     id:string;
     children:Row[];
     constructInput:GridUrlConstruct;
+    initialiser:boolean;
 
-    constructor(input:GridUrlConstruct) {
-        if (!input || !_.isObject(input) || _.isArray(input))
+    constructor(input:GridUrlConstruct, initialiser?:boolean) {
+        if (!input || !_.isObject(input) || _.isArray(input)) {
+            console.error(input);
             throw new TypeError('The input of Grid needs to be a valid Object');
+        }
 
         const keys = _.keys(input);
 
@@ -41,6 +44,8 @@ export class Grid {
             throw new RangeError('The input for instantiating Grid\'s rows needs to consist of at least 1 valid RowUrlConstruct object');
 
         this.children = _.map(rowsInput, (row:RowUrlConstruct) => new Row(row));
+
+        this.initialiser = initialiser;
     }
 
     // @TODO more unit tests

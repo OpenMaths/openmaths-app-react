@@ -15,8 +15,10 @@ export class Row {
     constructInput:RowUrlConstruct;
 
     constructor(input:RowUrlConstruct) {
-        if (!input || !_.isObject(input) || _.isArray(input))
+        if (!input || !_.isObject(input) || _.isArray(input)) {
+            console.error(input);
             throw new TypeError('The input of Row needs to be a valid Object');
+        }
 
         const keys = _.keys(input);
 

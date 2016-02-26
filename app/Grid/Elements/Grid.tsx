@@ -78,8 +78,8 @@ class GridElement extends React.Component<IGridProps, {}> {
         if (layout instanceof Grid) {
             return (
                 <div className={'grid rows-' + numberOfRows + (this.props.parent ? ' parent' : '')} key={layout.id}>
-                    {layout.children.map((row:Row) => <RowElement addRow={addRow} layout={row}
-                                                                  updateGrid={updateGrid} key={row.id}/>)}
+                    {_.map(layout.children, (row:Row) => <RowElement addRow={addRow} layout={row}
+                                                                     updateGrid={updateGrid} key={row.id}/>)}
                 </div>
             );
         } else {

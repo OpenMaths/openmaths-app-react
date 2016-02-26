@@ -73,9 +73,9 @@ export default class RowElement extends React.Component<IRowElementProps, {}> {
         if (layout instanceof Row) {
             return (
                 <div className={'row columns-' + numberOfColumns}>
-                    {layout.children.map((column:Column) => <ColumnElement addColumn={addColumn} layout={column}
-                                                                           addRow={addRow} splitColumn={splitColumn}
-                                                                           key={column.id}/>)}
+                    {_.map(layout.children, (column:Column) => <ColumnElement addColumn={addColumn} layout={column}
+                                                                              addRow={addRow} splitColumn={splitColumn}
+                                                                              key={column.id}/>)}
                 </div>
             );
         } else {

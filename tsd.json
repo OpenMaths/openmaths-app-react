@@ -49,6 +49,9 @@
     },
     "express/express.d.ts": {
       "commit": "b2f665ce4156ccb1bbe7025cdeb4be5547b5ce0e"
+    },
+    "immutable/immutable.d.ts": {
+      "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
     }
   }
 }
