@@ -1,5 +1,7 @@
 import * as _ from 'lodash'
 
+import UoI from '../../UoI/UoI'
+
 import { ColumnPosition } from '../DataModel'
 
 import { Grid } from './Grid'
@@ -68,5 +70,22 @@ describe('Row component', () => {
         const appendedColumn = _.last(RowComponent.children);
 
         expect(appendedColumn.id).toEqual(ColumnComponent.id);
+    });
+
+    it('should correctly update a column', () => {
+        let RowComponent = new Row(Row.constructUrl([Column.constructEmptyUrl(), Column.constructEmptyUrl()]));
+
+        const
+            originalColumn = _.first(RowComponent.children),
+            newColumn = new Column(Column.constructUrl(ColumnConstructor.Content, Grid.constructEmptyUrl()));
+
+        expect(originalColumn.child instanceof UoI).toBe(true);
+
+        RowComponent.updateColumn(originalColumn.id, newColumn);
+
+        RowComponent.children.forEach((column:Column, key:number) => {
+            if (column.id == newColumn.id)
+                expect(column.child instanceof Grid).toBe(true);
+        });
     });
 });

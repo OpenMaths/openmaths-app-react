@@ -1,9 +1,10 @@
 import * as _ from 'lodash'
 
+import UoI from '../../UoI/UoI'
+
 import { Grid } from './Grid'
 import { Row } from './Row'
 import { Column, ColumnConstructor } from './Column'
-import UoI from '../../UoI/UoI'
 
 describe('Column component', () => {
     it('should parse its input correctly', () => {
