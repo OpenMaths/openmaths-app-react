@@ -9,6 +9,7 @@
   },
   "files": [
     "../typings/tsd.d.ts",
+    "./DataModel/Http.ts",
     "./DataModel/Payload.ts",
     "./router.ts"
   ]
