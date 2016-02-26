@@ -8,8 +8,12 @@
     "crypto-js": "^3.1.6",
     "css-loader": "^0.23.1",
     "expect.js": "^0.3.1",
+    "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
+    "fs": "0.0.2",
     "function-bind": "^1.1.0",
+    "html-webpack-plugin": "^2.9.0",
+    "http-proxy": "^1.13.2",
     "immutable": "^3.7.6",
     "jasmine": "^2.4.1",
     "karma": "^0.13.21",
@@ -33,20 +37,24 @@
     "rx": "^4.0.7",
     "sass-loader": "^3.1.2",
     "shortid": "^2.2.4",
+    "stats-webpack-plugin": "^0.3.1",
     "style-loader": "^0.13.0",
     "ts-loader": "^0.8.0",
     "typescript": "^1.7.5",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.12",
-    "webpack-dev-server": "^1.14.1"
+    "webpack-dev-server": "^1.14.1",
+    "webpack-hot-middleware": "^2.7.1"
   },
   "devDependencies": {
     "webpack-notifier": "^1.2.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "webpack --watch -v",
-    "serve": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --port 3030"
+    "test": "",
+    "start": "NODE_ENV=development PORT=8081 node server",
+    "build": "webpack --config ./webpack.production.config.js --progress --profile --colors",
+    "start-prod": "npm run build && NODE_ENV=production PORT=8081 forever start server.js",
+    "stop-prod": "forever stop server.js"
   },
   "author": "",
   "license": "ISC"
