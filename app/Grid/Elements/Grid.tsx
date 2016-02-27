@@ -1,7 +1,10 @@
 import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 import * as _ from 'lodash'
 import { connect } from 'react-redux'
 import { tinyActions } from 'redux-tiny-router'
+
+import { requestUoIToBeInserted } from '../../UoI/Actions'
 
 import { Grid } from '../Components/Grid'
 import { Row } from '../Components/Row'
@@ -90,6 +93,45 @@ class GridElement extends React.Component<IGridProps, {}> {
 
     render() {
         return this.build();
+    }
+
+    componentDidMount() {
+        let x:number, y:number, id:string, instanceEle = ReactDOM.findDOMNode(this);
+
+        const dispatch = this.props.dispatch;
+
+        if (this.props.parent) {
+            instanceEle.addEventListener('mousedown', mousedown);
+        }
+
+        function mousedown(event:any) {
+            event.preventDefault();
+
+            x = event.pageX;
+            y = event.pageY;
+
+            // @TODO change the condition below to check for the correct class (expand-umi) or tag-name (expand-umi)
+            if (event.target.tagName == 'ARTICLE') {
+                console.log(event.target);
+
+                id = '8';
+
+                window.addEventListener('mousemove', mousemove);
+                window.addEventListener('mouseup', mouseup);
+            }
+        }
+
+        function mousemove(event:any) {
+            x = event.clientX;
+            y = event.clientY;
+        }
+
+        function mouseup() {
+            window.removeEventListener('mousemove', mousemove);
+            window.removeEventListener('mouseup', mouseup);
+
+            dispatch(requestUoIToBeInserted(x, y, id));
+        }
     }
 }
 

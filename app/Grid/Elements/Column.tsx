@@ -18,6 +18,7 @@ interface IColumnElementProps {
     addRow:(position:RowPosition) => void;
     addColumn:(position:ColumnPosition) => void;
     splitColumn:(operator:SplitOperator, columnId:string, uoi:UoI) => void;
+    insertContent:(columnId:string, insertId:string) => void;
 
     // State => Props
     dispatch?:Redux.Dispatch;
@@ -33,12 +34,16 @@ class ColumnElement extends React.Component<IColumnElementProps, {}> {
         }
     }
 
+    // @TODO on insert content, there should be a modal which takes a callback as part of its argument list. The
+    // callback method should be (insertId:string) => this.props.insertContent(layout.id, insertId)
+
     build() {
         this.layout = this.props.layout;
 
         const
             layout = this.layout,
-            child = layout.child;
+            child = layout.child,
+            insertContent = (insertId:string) => this.props.insertContent(layout.id, insertId);
 
         if (child instanceof Grid) {
             return (
@@ -68,9 +73,12 @@ class ColumnElement extends React.Component<IColumnElementProps, {}> {
                         <strong onClick={() => this.props.splitColumn(SplitOperator.Vertically, layout.id, child)}>
                             Split Vertically
                         </strong>
+                        <strong onClick={() => this.props.insertContent(layout.id, '7')}>
+                            Insert Content
+                        </strong>
                     </div>
 
-                    <UoIBoundingBox layout={child}/>
+                    <UoIBoundingBox insertContent={insertContent} layout={child}/>
                 </div>
             );
         } else {

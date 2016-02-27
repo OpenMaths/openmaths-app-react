@@ -28,7 +28,7 @@ class UoIContent extends React.Component<IUoIContentProps, {}> {
     }
 
     render() {
-        return <article>{this.layout && this.layout.id ? this.layout.id : 'N/A (empty)'}</article>;
+        return <article>{this.layout && this.layout.title ? this.layout.title : 'N/A (empty)'}</article>;
     }
 }
 

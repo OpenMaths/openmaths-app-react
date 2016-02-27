@@ -45,3 +45,13 @@ export function getUoIData(id:string) {
             });
     }
 }
+
+export const REQUEST_UOI_TO_BE_INSERTED = 'REQUEST_UOI_TO_BE_INSERTED';
+export function requestUoIToBeInserted(x:number, y:number, id:string) {
+    return {
+        type: REQUEST_UOI_TO_BE_INSERTED,
+        x: x,
+        y: y,
+        id: id
+    };
+}

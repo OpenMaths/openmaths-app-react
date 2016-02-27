@@ -27,6 +27,14 @@ export default class RowElement extends React.Component<IRowElementProps, {}> {
         this.props.updateGrid(newRow);
     }
 
+    insertContent(columnId:string, insertId:string) {
+        const
+            newColumn = new Column(Column.constructUrl(ColumnConstructor.Content, insertId)),
+            newRow = this.layout.updateColumn(columnId, newColumn);
+
+        this.props.updateGrid(newRow);
+    }
+
     splitColumn(operator:SplitOperator, columnId:string, uoi:UoI) {
         const
             recreateColumnUrl = Column.constructUrl(ColumnConstructor.Content, uoi.id),
@@ -68,13 +76,15 @@ export default class RowElement extends React.Component<IRowElementProps, {}> {
             numberOfColumns = layout.children.length,
             addRow = this.props.addRow,
             addColumn = this.addColumn.bind(this),
-            splitColumn = this.splitColumn.bind(this);
+            splitColumn = this.splitColumn.bind(this),
+            insertContent = this.insertContent.bind(this);
 
         if (layout instanceof Row) {
             return (
                 <div className={'row columns-' + numberOfColumns}>
                     {_.map(layout.children, (column:Column) => <ColumnElement addColumn={addColumn} layout={column}
                                                                               addRow={addRow} splitColumn={splitColumn}
+                                                                              insertContent={insertContent}
                                                                               key={column.id}/>)}
                 </div>
             );
