@@ -1,5 +1,11 @@
 "use strict";
+var axios = require('axios');
+var Rx = require('rx');
+var Http_1 = require('./DataModel/Http');
 var bodyParser = require('body-parser');
+var apiInstance = axios.create({
+    baseURL: 'http://127.0.0.1:8080'
+});
 module.exports = function (app, router) {
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
@@ -7,13 +13,19 @@ module.exports = function (app, router) {
         next();
     });
     router.get('/uoi/:id', function (req, res) {
-        var id = req.params['id'];
-        console.log('Getting UoI id: ' + id);
-        res.json({
-            data: {
-                id: id,
-                title: 'How to write formal content'
+        var id = req.params['id'], promise = apiInstance.get('id/' + id);
+        Rx.Observable
+            .fromPromise(promise)
+            .subscribe(function (response) {
+            var data = response.data;
+            if (data.error) {
+                res.status(Http_1.Response.ServerError);
+                res.json(data.error);
             }
+            res.json(data.success);
+        }, function (err) {
+            res.status(Http_1.Response.ServerError);
+            res.json({ error: err });
         });
     });
     app.use('/api', router);

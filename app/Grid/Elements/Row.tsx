@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as _ from 'lodash'
 
-import UoI from '../../UoI/UoI'
+import UoI from '../../UoI/Components/UoI'
 
 import { Grid, GridUrlConstruct } from '../Components/Grid'
 import { Row } from '../Components/Row'

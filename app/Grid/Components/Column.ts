@@ -1,7 +1,7 @@
 import * as _ from 'lodash'
 import * as shortid from 'shortid'
 
-import UoI from '../../UoI/UoI'
+import UoI from '../../UoI/Components/UoI'
 import { Grid, GridUrlConstruct }from './Grid'
 
 export enum ColumnConstructor { Content, Empty }
@@ -36,7 +36,7 @@ export class Column {
         this.constructInput = {};
         this.constructInput[this.id] = content;
 
-        this.child = (!content || _.isString(content)) ? new UoI(content) : new Grid(content);
+        this.child = (!content || _.isString(content)) ? new UoI({id: content}) : new Grid(content);
     };
 
     static constructUrl(type:ColumnConstructor, content:string|GridUrlConstruct):ColumnUrlConstruct {

@@ -52,6 +52,63 @@
     },
     "immutable/immutable.d.ts": {
       "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
+    },
+    "axios/axios.d.ts": {
+      "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
+    },
+    "rx/rx.all.d.ts": {
+      "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
+    },
+    "rx/rx.d.ts": {
+      "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
+    },
+    "rx/rx.time.d.ts": {
+      "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
+    },
+    "rx/rx.time-lite.d.ts": {
+      "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
+    },
+    "rx/rx.async.d.ts": {
+      "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
+    },
+    "rx/rx-lite.d.ts": {
+      "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
+    },
+    "rx/rx.async-lite.d.ts": {
+      "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
+    },
+    "rx/rx.binding.d.ts": {
+      "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
+    },
+    "rx/rx.aggregates.d.ts": {
+      "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
+    },
+    "rx/rx.binding-lite.d.ts": {
+      "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
+    },
+    "rx/rx.coincidence.d.ts": {
+      "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
+    },
+    "rx/rx.coincidence-lite.d.ts": {
+      "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
+    },
+    "rx/rx.joinpatterns.d.ts": {
+      "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
+    },
+    "rx/rx.experimental.d.ts": {
+      "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
+    },
+    "rx/rx.virtualtime.d.ts": {
+      "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
+    },
+    "rx/rx.backpressure-lite.d.ts": {
+      "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
+    },
+    "rx/rx.testing.d.ts": {
+      "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
+    },
+    "rx/rx.backpressure.d.ts": {
+      "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
     }
   }
 }

@@ -4,6 +4,7 @@ import * as thunk from 'redux-thunk'
 import { applyMiddleware, utils } from 'redux-tiny-router'
 
 import { RequestGridReducer } from './Grid/Reducer'
+import { UoIReducer } from './UoI/Reducer'
 
 utils.setRoutes([
     '/board/:GridUrlConstructor/*',
@@ -13,7 +14,8 @@ utils.setRoutes([
 const
     middleware = [<any> thunk],
     reducers = {
-        RequestGridReducer
+        RequestGridReducer,
+        UoIReducer
     };
 
 const createStoreWithMiddleware = applyMiddleware(

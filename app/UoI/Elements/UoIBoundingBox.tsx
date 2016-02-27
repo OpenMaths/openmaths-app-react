@@ -3,9 +3,10 @@ import * as ReactDOM from 'react-dom'
 import * as _ from 'lodash'
 import { connect } from 'react-redux'
 
-import UoI from './UoI'
+import UoI from '../Components/UoI'
+import UoIContent from './UoIContent'
 
-interface IUoIElementProps {
+interface IUoIBoundingBoxProps {
     layout:UoI;
 
     // State => Props
@@ -13,7 +14,7 @@ interface IUoIElementProps {
     GridUrl?:string;
 }
 
-class UoIElement extends React.Component<IUoIElementProps, {}> {
+class UoIBoundingBox extends React.Component<IUoIBoundingBoxProps, {}> {
     layout:UoI;
 
     measure() {
@@ -35,14 +36,14 @@ class UoIElement extends React.Component<IUoIElementProps, {}> {
     }
 
     render() {
-        return <div>{this.layout.id ? this.layout.id : 'N/A (empty)'}</div>;
+        return <div className="uoi-bounding-box"><UoIContent id={this.layout.id}/></div>;
     }
 }
 
 function select(state) {
     return {
-        GridUrl: state.router.params.GridUrlConstructor,
+        GridUrl: state.router.params.GridUrlConstructor
     };
 }
 
-export default connect(select)(UoIElement);
+export default connect(select)(UoIBoundingBox);

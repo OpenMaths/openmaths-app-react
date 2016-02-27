@@ -31,16 +31,15 @@ class View extends React.Component<IViewProps, {}> {
         let newGrid;
 
         const
-            columnsUrl = [Column.constructEmptyUrl(), Column.constructEmptyUrl()],
+            columnsUrl = [Column.constructUrl(ColumnConstructor.Content, '9'), Column.constructEmptyUrl()],
             rowsUrl = [Row.constructUrl(columnsUrl)],
             gridUrl = Grid.constructUrl(rowsUrl);
 
         const urlComposer = this.props.url;
 
-        if (urlComposer) {
-            console.debug('About to initialise new Grid');
+        if (urlComposer)
             newGrid = new Grid(decodeGridUrl(urlComposer));
-        } else
+        else
             newGrid = new Grid(gridUrl);
 
         return (

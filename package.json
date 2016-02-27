@@ -29,7 +29,7 @@
     "react-redux": "^4.4.0",
     "redux-thunk": "^1.0.3",
     "redux-tiny-router": "^0.6.1",
-    "rx": "^4.0.7",
+    "rx": "^4.0.8",
     "shortid": "^2.2.4",
     "stats-webpack-plugin": "^0.3.1",
     "ts-loader": "^0.8.0",

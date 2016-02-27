@@ -1,6 +1,6 @@
 import * as _ from 'lodash'
 
-import UoI from '../../UoI/UoI'
+import UoI from '../../UoI/Components/UoI'
 
 import { ColumnPosition } from '../DataModel'
 
