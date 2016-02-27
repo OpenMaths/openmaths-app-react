@@ -10,7 +10,7 @@ const port = process.env.PORT ? process.env.PORT : 8081;
 const app = express();
 const router = express.Router();
 
-require('./restApi/js/router')(app, router);
+require('./restApi/js/restApi/router')(app, router);
 
 if (isDeveloping) {
     const compiler = webpack(config);

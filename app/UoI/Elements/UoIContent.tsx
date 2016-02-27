@@ -27,8 +27,28 @@ class UoIContent extends React.Component<IUoIContentProps, {}> {
         return shouldUpdate;
     }
 
+    componentDidMount() {
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, this.refs['mathjax']]);
+    }
+
+    componentDidUpdate() {
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, this.refs['mathjax']]);
+    }
+
+    createContent(content:string) {
+        return {__html: content};
+    };
+
     render() {
-        return <article>{this.layout && this.layout.title ? this.layout.title : 'N/A (empty)'}</article>;
+        return this.layout ? (
+            <article>
+                <header>
+                    {this.layout.title}
+                </header>
+
+                <main ref="mathjax" dangerouslySetInnerHTML={this.createContent(this.layout.htmlContent)}/>
+            </article>
+        ) : (<div></div>);
     }
 }
 

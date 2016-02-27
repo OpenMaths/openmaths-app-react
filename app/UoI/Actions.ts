@@ -37,7 +37,6 @@ export function getUoIData(id:string) {
             //    .map((response:any):AppDescriptionObject[] => _.map(response.data, data =>
             //        new AppDescriptionObject(data)))
             .subscribe((response) => {
-                console.log(response);
                 dispatch(receiveUoIData(new UoI(response.data)));
             }, (err) => {
                 console.error(err);

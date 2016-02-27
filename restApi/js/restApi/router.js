@@ -22,7 +22,8 @@ module.exports = function (app, router) {
                 res.status(Http_1.Response.ServerError);
                 res.json(data.error);
             }
-            res.json(data.success);
+            var UmiData = data.success;
+            res.json(UmiData);
         }, function (err) {
             res.status(Http_1.Response.ServerError);
             res.json({ error: err });

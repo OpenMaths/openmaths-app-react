@@ -109,6 +109,12 @@
     },
     "rx/rx.backpressure.d.ts": {
       "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
+    },
+    "katex/katex.d.ts": {
+      "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
+    },
+    "mathjax/mathjax.d.ts": {
+      "commit": "36396e4b64e593ce77d03bb14b52027b56fd80e9"
     }
   }
 }

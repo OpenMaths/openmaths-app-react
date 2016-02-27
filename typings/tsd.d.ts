@@ -33,3 +33,5 @@
 /// <reference path="rx/rx.time-lite.d.ts" />
 /// <reference path="rx/rx.time.d.ts" />
 /// <reference path="rx/rx.virtualtime.d.ts" />
+/// <reference path="katex/katex.d.ts" />
+/// <reference path="mathjax/mathjax.d.ts" />

@@ -29,7 +29,7 @@ export default class RowElement extends React.Component<IRowElementProps, {}> {
 
     insertContent(columnId:string, insertId:string) {
         const
-            newColumn = new Column(Column.constructUrl(ColumnConstructor.Content, insertId)),
+            newColumn = new Column(insertId ? Column.constructUrl(ColumnConstructor.Content, insertId) : Column.constructEmptyUrl()),
             newRow = this.layout.updateColumn(columnId, newColumn);
 
         this.props.updateGrid(newRow);

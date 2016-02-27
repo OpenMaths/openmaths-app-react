@@ -1,12 +1,14 @@
 export default class UoI {
     id:string;
     title:string;
+    htmlContent:string;
 
     position:ClientRect;
 
     constructor(data) {
         this.id = data.id ? data.id : null;
         this.title = data.meta && data.meta.title ? data.meta.title : null;
+        this.htmlContent = data.htmlContent ? data.htmlContent : null;
     }
 
     isWithinBoundingBox(x:number, y:number) {

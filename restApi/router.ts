@@ -1,6 +1,7 @@
 import * as express from 'express'
 import * as axios from 'axios'
 import * as Rx from 'rx'
+
 import { OurScalaApiPayload } from './DataModel/Payload'
 import { Response } from './DataModel/Http'
 
@@ -34,7 +35,10 @@ module.exports = (app:express.Application, router:express.Router) => {
                     res.json(data.error);
                 }
 
-                res.json(data.success);
+                let UmiData = data.success;
+                //UmiData.htmlContent = KaTexHelpers.parse(UmiData.htmlContent);
+
+                res.json(UmiData);
             }, (err) => {
                 res.status(Response.ServerError);
                 res.json({error: err});

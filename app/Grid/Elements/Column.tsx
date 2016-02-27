@@ -76,6 +76,9 @@ class ColumnElement extends React.Component<IColumnElementProps, {}> {
                         <strong onClick={() => this.props.insertContent(layout.id, '7')}>
                             Insert Content
                         </strong>
+                        <strong onClick={() => this.props.insertContent(layout.id, null)}>
+                            Remove Content
+                        </strong>
                     </div>
 
                     <UoIBoundingBox insertContent={insertContent} layout={child}/>
