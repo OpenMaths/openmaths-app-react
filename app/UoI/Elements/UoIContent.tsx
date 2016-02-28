@@ -41,9 +41,10 @@ class UoIContent extends React.Component<IUoIContentProps, {}> {
 
     render() {
         return this.layout ? (
-            <article>
+            <article ref="ps-container">
                 <header>
-                    {this.layout.title}
+                    <small className="label">{this.layout.type}</small>
+                    <strong className="heading">{this.layout.title}</strong>
                 </header>
 
                 <main ref="mathjax" dangerouslySetInnerHTML={this.createContent(this.layout.htmlContent)}/>

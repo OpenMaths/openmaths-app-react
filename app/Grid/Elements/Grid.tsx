@@ -4,7 +4,7 @@ import * as _ from 'lodash'
 import { connect } from 'react-redux'
 import { tinyActions } from 'redux-tiny-router'
 
-import { requestUoIToBeInserted } from '../../UoI/Actions'
+import { requestUoIToBeInserted, toggleUoIGridControls } from '../../UoI/Actions'
 
 import { Grid } from '../Components/Grid'
 import { Row } from '../Components/Row'
@@ -36,6 +36,7 @@ class GridElement extends React.Component<IGridProps, {}> {
 
         const newGrid = this.layout;
 
+        this.props.dispatch(toggleUoIGridControls(null));
         this.props.dispatch(requestUpdateGrid(newGrid));
     }
 
@@ -44,6 +45,7 @@ class GridElement extends React.Component<IGridProps, {}> {
             newRow = new Row(Row.constructEmptyUrl()),
             newGrid = this.layout.addRow(position, newRow);
 
+        this.props.dispatch(toggleUoIGridControls(null));
         this.props.dispatch(requestUpdateGrid(newGrid));
     }
 
@@ -105,19 +107,23 @@ class GridElement extends React.Component<IGridProps, {}> {
         }
 
         function mousedown(event:any) {
-            event.preventDefault();
-
             x = event.pageX;
             y = event.pageY;
 
             // @TODO change the condition below to check for the correct class (expand-umi) or tag-name (expand-umi)
             if (event.target.tagName == 'A') {
-                const attr = event.target.attributes;
+                const
+                    attr = event.target.attributes,
+                    containsExpandId = attr['expand-id'];
 
-                id = attr['expand-id'].value;
+                if (containsExpandId) {
+                    event.preventDefault();
 
-                window.addEventListener('mousemove', mousemove);
-                window.addEventListener('mouseup', mouseup);
+                    id = containsExpandId.value;
+
+                    window.addEventListener('mousemove', mousemove);
+                    window.addEventListener('mouseup', mouseup);
+                }
             }
         }
 

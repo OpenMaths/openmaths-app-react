@@ -35,3 +35,4 @@
 /// <reference path="rx/rx.virtualtime.d.ts" />
 /// <reference path="katex/katex.d.ts" />
 /// <reference path="mathjax/mathjax.d.ts" />
+/// <reference path="keymaster/keymaster.d.ts" />

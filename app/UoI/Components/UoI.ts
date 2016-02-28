@@ -1,13 +1,15 @@
 export default class UoI {
     id:string;
     title:string;
+    type:string;
     htmlContent:string;
 
     position:ClientRect;
 
-    constructor(data) {
+    constructor(data:any) {
         this.id = data.id ? data.id : null;
         this.title = data.meta && data.meta.title ? data.meta.title : null;
+        this.type = data.umiType ? data.umiType : null;
         this.htmlContent = data.htmlContent ? data.htmlContent : null;
     }
 

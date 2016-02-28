@@ -3,6 +3,8 @@ import * as ReactDOM from 'react-dom'
 import * as _ from 'lodash'
 import { connect } from 'react-redux'
 
+var Ps:any = require('perfect-scrollbar');
+
 import UoI from '../Components/UoI'
 import UoIContent from './UoIContent'
 
@@ -31,6 +33,10 @@ class UoIBoundingBox extends React.Component<IUoIBoundingBoxProps, {}> {
 
     componentDidMount() {
         this.measure();
+
+        Ps.initialize(ReactDOM.findDOMNode(this), {
+            suppressScrollX: false
+        });
     }
 
     // This component should also be subscribed to a state which requests a UoI to be loaded inside a particular box
