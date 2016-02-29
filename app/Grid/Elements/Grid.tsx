@@ -4,6 +4,8 @@ import * as _ from 'lodash'
 import { connect } from 'react-redux'
 import { tinyActions } from 'redux-tiny-router'
 
+import { touchesWindowBoundaries, Side } from '../../Utils/TouchesWindowBoundaries'
+
 import { requestUoIToBeInserted } from '../../UoI/Actions'
 
 import { Grid } from '../Components/Grid'
@@ -114,7 +116,7 @@ class GridElement extends React.Component<IGridProps, {}> {
     }
 
     componentDidMount() {
-        let x:number, y:number, id:string, instanceEle = ReactDOM.findDOMNode(this);
+        let x:number, y:number, id:string, subscription, instanceEle = ReactDOM.findDOMNode(this);
 
         const dispatch = this.props.dispatch;
 
@@ -126,16 +128,33 @@ class GridElement extends React.Component<IGridProps, {}> {
             x = event.pageX;
             y = event.pageY;
 
-            // @TODO change the condition below to check for the correct class (expand-umi) or tag-name (expand-umi)
-            if (event.target.tagName == 'A') {
+            if (event.target.tagName.toLowerCase() == 'a') {
                 const
                     attr = event.target.attributes,
                     containsExpandId = attr['expand-id'];
 
+                // @TODO a nicer way of doing this?
                 if (containsExpandId) {
                     event.preventDefault();
 
                     id = containsExpandId.value;
+
+                    let w:any = window;
+
+                    subscription = Rx.Observable
+                        .fromEvent(w, 'mousemove')
+                        .debounce(1000)
+                        .map((e:any) => {
+                            const windowBoundingRect = document
+                                .getElementById('OpenMathsAppContainer')
+                                .getBoundingClientRect();
+
+                            return touchesWindowBoundaries(windowBoundingRect, e.clientX, e.clientY);
+                        })
+                        .filter((s:Side) => !_.isNull(s))
+                        .subscribe((touches:Side) => {
+                            console.info(touches);
+                        });
 
                     window.addEventListener('mousemove', mousemove);
                     window.addEventListener('mouseup', mouseup);
@@ -151,6 +170,8 @@ class GridElement extends React.Component<IGridProps, {}> {
         function mouseup() {
             window.removeEventListener('mousemove', mousemove);
             window.removeEventListener('mouseup', mouseup);
+
+            subscription.dispose();
 
             dispatch(requestUoIToBeInserted(x, y, id));
         }

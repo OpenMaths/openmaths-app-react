@@ -18,12 +18,14 @@ module.exports = function (app, router) {
             .fromPromise(promise)
             .subscribe(function (response) {
             var data = response.data;
-            if (data.error) {
-                res.status(Http_1.Response.ServerError);
-                res.json(data.error);
+            if (data.success) {
+                res.json(data.success);
             }
-            var UmiData = data.success;
-            res.json(UmiData);
+            else {
+                var Err = new Http_1.Error('An error occurred while fetching UoI: ' + id, Http_1.Response.ServerError, data);
+                res.status(Err.code);
+                res.json(Err.message);
+            }
         }, function (err) {
             res.status(Http_1.Response.ServerError);
             res.json({ error: err });

@@ -3,6 +3,8 @@
 
 // More codes at http://webmaster.iu.edu/tools-and-guides/maintenance/error-codes.phtml
 
+import * as _ from 'lodash'
+
 export enum Response {
     OK = 200,
     Created = 201,
@@ -17,4 +19,21 @@ export enum Response {
     ServerError = 500,
     NotImplemented = 501,
     BadGateway = 502
+}
+
+export class Error {
+    message:string;
+    code:Response;
+
+    constructor(message:string, code?:Response, data?:any) {
+        this.message = message;
+        this.code = _.isUndefined(code) ? Response.ServerError : code;
+
+        if (data) {
+            console.log(data);
+
+            if (data.error)
+                this.message = data.error;
+        }
+    }
 }

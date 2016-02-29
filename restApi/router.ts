@@ -3,7 +3,7 @@ import * as axios from 'axios'
 import * as Rx from 'rx'
 
 import { OurScalaApiPayload } from './DataModel/Payload'
-import { Response } from './DataModel/Http'
+import { Response, Error } from './DataModel/Http'
 
 const bodyParser = require('body-parser');
 
@@ -30,16 +30,15 @@ module.exports = (app:express.Application, router:express.Router) => {
             .subscribe(response => {
                 const data:any = response.data;
 
-                if (data.error) {
-                    res.status(Response.ServerError);
-                    res.json(data.error);
+                if (data.success) {
+                    res.json(data.success);
+                } else {
+                    const Err = new Error('An error occurred while fetching UoI: ' + id, Response.ServerError, data);
+
+                    res.status(Err.code);
+                    res.json(Err.message);
                 }
-
-                let UmiData = data.success;
-                //UmiData.htmlContent = KaTexHelpers.parse(UmiData.htmlContent);
-
-                res.json(UmiData);
-            }, (err) => {
+            }, err => {
                 res.status(Response.ServerError);
                 res.json({error: err});
             });

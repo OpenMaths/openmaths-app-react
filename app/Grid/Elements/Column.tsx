@@ -40,9 +40,10 @@ class ColumnElement extends React.Component<IColumnElementProps, {}> {
                 this.props.dispatch(getUoIData(this.layout.child.id));
         }
 
-        Ps.initialize(ReactDOM.findDOMNode(this.refs['controls']), {
-            suppressScrollX: true
-        });
+        const initPsOnElement = ReactDOM.findDOMNode(this.refs['controls']);
+
+        if (initPsOnElement)
+            Ps.initialize(initPsOnElement, {suppressScrollX: true});
     }
 
     // @TODO on insert content, there should be a modal which takes a callback as part of its argument list. The

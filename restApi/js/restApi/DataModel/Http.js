@@ -1,4 +1,5 @@
 "use strict";
+var _ = require('lodash');
 (function (Response) {
     Response[Response["OK"] = 200] = "OK";
     Response[Response["Created"] = 201] = "Created";
@@ -15,4 +16,17 @@
     Response[Response["BadGateway"] = 502] = "BadGateway";
 })(exports.Response || (exports.Response = {}));
 var Response = exports.Response;
+var Error = (function () {
+    function Error(message, code, data) {
+        this.message = message;
+        this.code = _.isUndefined(code) ? Response.ServerError : code;
+        if (data) {
+            console.log(data);
+            if (data.error)
+                this.message = data.error;
+        }
+    }
+    return Error;
+}());
+exports.Error = Error;
 //# sourceMappingURL=Http.js.map
