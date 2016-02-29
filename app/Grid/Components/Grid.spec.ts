@@ -64,4 +64,35 @@ describe('Grid component', () => {
 
         expect(theRowBelow.id).toEqual(RowComponent.id);
     });
+
+    it('should correctly remove a row', () => {
+        let GridComponent = new Grid(Grid.constructUrl([
+            Row.constructEmptyUrl(),
+            Row.constructEmptyUrl(),
+            Row.constructEmptyUrl(),
+            Row.constructEmptyUrl()
+        ]));
+
+        const rowToBeRemoved = _.first(GridComponent.children);
+
+        expect(rowToBeRemoved instanceof Row).toBe(true);
+
+        GridComponent.removeRow(rowToBeRemoved.id);
+
+        expect(GridComponent.children.length).toBe(3);
+
+        _.forEach(GridComponent.children, (row:Row, key:number) => expect(row.id).not.toBe(rowToBeRemoved.id));
+    });
+
+    it('should correctly remove the last remaining row', () => {
+        let GridComponent = new Grid(Grid.constructUrl([Row.constructEmptyUrl()]));
+
+        const rowToBeRemoved = _.last(GridComponent.children);
+
+        expect(rowToBeRemoved instanceof Row).toBe(true);
+
+        GridComponent.removeRow(rowToBeRemoved.id);
+
+        expect(GridComponent.children).toEqual([]);
+    });
 });
