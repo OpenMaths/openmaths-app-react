@@ -84,6 +84,23 @@ export class Grid {
         return this;
     }
 
+    // @TODO test this, it's really easyyyyyy
+    removeRow(removeRowId:string):Grid {
+        let newChildren:Row[] = _.clone(this.children);
+
+        // @TODO fail safe for when there is only one row left
+
+        _.forEach(newChildren, (row:Row, key:number) => {
+            if (row.id == removeRowId)
+                delete newChildren[key];
+        });
+
+        this.children = _.filter(newChildren, _ => _);
+
+        return this;
+    }
+
+
     getConstructUrl():GridUrlConstruct {
         // go through all the children, concatenate into a single list and construct a grid
         const gridUrl:RowUrlConstruct[] = _.map(this.children, (row:Row) => row.getConstructUrl());

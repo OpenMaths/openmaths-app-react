@@ -88,6 +88,20 @@ export class Row {
         return this;
     }
 
+    // @TODO test this, it's really easyyyyyy
+    removeColumn(removeColumnId:string):Row {
+        let newChildren:Column[] = _.clone(this.children);
+
+        _.forEach(newChildren, (column:Column, key:number) => {
+            if (column.id == removeColumnId)
+                delete newChildren[key];
+        });
+
+        this.children = _.filter(newChildren, _ => _);
+
+        return this;
+    }
+
     getConstructUrl():RowUrlConstruct {
         // go through all the children, concatenate into a single list and construct a row
         const rowUrl:ColumnUrlConstruct[] = _.map(this.children, (column:Column) => column.getConstructUrl());

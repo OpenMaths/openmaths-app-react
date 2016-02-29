@@ -19,6 +19,7 @@ import RowElement from './Row'
 interface IGridProps {
     layout:Grid;
     parent?:boolean;
+    removeCell?:() => void
 
     // State => Props
     dispatch?:Redux.Dispatch;
@@ -45,6 +46,22 @@ class GridElement extends React.Component<IGridProps, {}> {
             newGrid = this.layout.addRow(position, newRow);
 
         this.props.dispatch(requestUpdateGrid(newGrid));
+    }
+
+    removeRow(rowId:string) {
+        const newGrid = this.layout.removeRow(rowId);
+
+        switch (newGrid.children.length) {
+            case 0:
+                if (this.props.parent)
+                    this.addRow(RowPosition.Below);
+                else
+                    this.props.removeCell();
+                break;
+            default:
+                this.props.dispatch(requestUpdateGrid(newGrid));
+                break;
+        }
     }
 
     shouldComponentUpdate(nextProps:IGridProps) {
@@ -76,12 +93,13 @@ class GridElement extends React.Component<IGridProps, {}> {
             layout = this.layout,
             numberOfRows = layout.children.length,
             addRow = this.addRow.bind(this),
+            removeRow = this.removeRow.bind(this),
             updateGrid = this.updateGrid.bind(this);
 
         if (layout instanceof Grid) {
             return (
                 <div className={'grid rows-' + numberOfRows + (this.props.parent ? ' parent' : '')} key={layout.id}>
-                    {_.map(layout.children, (row:Row) => <RowElement addRow={addRow} layout={row}
+                    {_.map(layout.children, (row:Row) => <RowElement addRow={addRow} layout={row} removeRow={removeRow}
                                                                      updateGrid={updateGrid} key={row.id}/>)}
                 </div>
             );

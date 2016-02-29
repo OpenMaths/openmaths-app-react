@@ -13,6 +13,7 @@ import ColumnElement from './Column'
 interface IRowElementProps {
     layout:Row;
     addRow:(position:RowPosition) => void;
+    removeRow:(rowId:string) => void;
     updateGrid:(newRow:Row) => void;
 }
 
@@ -25,6 +26,23 @@ export default class RowElement extends React.Component<IRowElementProps, {}> {
             newRow = this.layout.addColumn(position, newColumn);
 
         this.props.updateGrid(newRow);
+    }
+
+    // So this method should remove the cell with a column layout identifier. I think the best way to go about it would
+    // be to iterate through all the columns, when an id matches, save that key and afterwards delete the element using
+    // that key. Once removed, strip the remaining list from undefined, as this is what's left from a delete operation
+    // performed on a list.
+    removeColumn(columnId:string) {
+        const newRow = this.layout.removeColumn(columnId);
+
+        switch (newRow.children.length) {
+            case 0:
+                this.props.removeRow(this.layout.id);
+                break;
+            default:
+                this.props.updateGrid(newRow);
+                break;
+        }
     }
 
     insertContent(columnId:string, insertId:string) {
@@ -77,7 +95,8 @@ export default class RowElement extends React.Component<IRowElementProps, {}> {
             addRow = this.props.addRow,
             addColumn = this.addColumn.bind(this),
             splitColumn = this.splitColumn.bind(this),
-            insertContent = this.insertContent.bind(this);
+            insertContent = this.insertContent.bind(this),
+            removeColumn = this.removeColumn.bind(this);
 
         if (layout instanceof Row) {
             return (
@@ -85,6 +104,7 @@ export default class RowElement extends React.Component<IRowElementProps, {}> {
                     {_.map(layout.children, (column:Column) => <ColumnElement addColumn={addColumn} layout={column}
                                                                               addRow={addRow} splitColumn={splitColumn}
                                                                               insertContent={insertContent}
+                                                                              removeColumn={removeColumn}
                                                                               key={column.id}/>)}
                 </div>
             );

@@ -17,6 +17,7 @@ interface IColumnElementProps {
     layout:Column;
     addRow:(position:RowPosition) => void;
     addColumn:(position:ColumnPosition) => void;
+    removeColumn:(columnId:string) => void;
     splitColumn:(operator:SplitOperator, columnId:string, uoi:UoI) => void;
     insertContent:(columnId:string, insertId:string) => void;
 
@@ -26,6 +27,10 @@ interface IColumnElementProps {
 
 class ColumnElement extends React.Component<IColumnElementProps, {}> {
     layout:Column;
+
+    removeCell() {
+        this.props.removeColumn(this.layout.id);
+    }
 
     componentDidMount() {
         if (this.layout.child instanceof UoI) {
@@ -48,7 +53,7 @@ class ColumnElement extends React.Component<IColumnElementProps, {}> {
         if (child instanceof Grid) {
             return (
                 <div className="column">
-                    <GridElement layout={child}/>
+                    <GridElement removeCell={() => this.removeCell()} layout={child}/>
                 </div>
             );
         } else if (child instanceof UoI) {
@@ -61,7 +66,8 @@ class ColumnElement extends React.Component<IColumnElementProps, {}> {
                             <i className="fa fa-chevron-up"></i>
                         </span>
                     </strong>
-                    <strong className="controls-boundaries right" onClick={() => this.props.addColumn(ColumnPosition.Append)}>
+                    <strong className="controls-boundaries right"
+                            onClick={() => this.props.addColumn(ColumnPosition.Append)}>
                         <span>
                             <i className="fa fa-chevron-right"></i>
                         </span>
@@ -71,46 +77,49 @@ class ColumnElement extends React.Component<IColumnElementProps, {}> {
                             <i className="fa fa-chevron-down"></i>
                         </span>
                     </strong>
-                    <strong className="controls-boundaries left" onClick={() => this.props.addColumn(ColumnPosition.Prepend)}>
+                    <strong className="controls-boundaries left"
+                            onClick={() => this.props.addColumn(ColumnPosition.Prepend)}>
                         <span>
                             <i className="fa fa-chevron-left"></i>
                         </span>
                     </strong>
 
-                    <div className="controls-expandable">
-                        <div className={hasContent ? 'control info' : 'is-hidden'}
-                             onClick={() => this.props.insertContent(layout.id, '7')}>
-                            <i className="fa fa-info"></i>
-                            <span className="icon-label">Details</span>
-                        </div>
+                    <div className={hasContent ? 'controls-expandable' : 'controls-expandable center'}>
+                        <div className="controls-expandable-table-wrapper">
+                            <div className={hasContent ? 'control info' : 'is-hidden'}
+                                 onClick={() => this.props.insertContent(layout.id, '7')}>
+                                <i className="fa fa-info"></i>
+                                <span className="icon-label">Details</span>
+                            </div>
 
-                        <div className="control" onClick={() => this.props.insertContent(layout.id, '7')}>
-                            <i className="fa fa-search"></i>
-                            <span className="icon-label">Insert Content</span>
-                        </div>
+                            <div className="control" onClick={() => this.props.insertContent(layout.id, '7')}>
+                                <i className="fa fa-search"></i>
+                                <span className="icon-label">Insert Content</span>
+                            </div>
 
-                        <div className="control edit"
-                             onClick={() => this.props.splitColumn(SplitOperator.Horizontally, layout.id, child)}>
-                            <i className="fa fa-ellipsis-v offset-top"></i>
-                            <span className="icon-label">Split Horizontally</span>
-                        </div>
+                            <div className="control edit"
+                                 onClick={() => this.props.splitColumn(SplitOperator.Horizontally, layout.id, child)}>
+                                <i className="fa fa-ellipsis-v offset-top"></i>
+                                <span className="icon-label">Split Horizontally</span>
+                            </div>
 
-                        <div className="control edit"
-                             onClick={() => this.props.splitColumn(SplitOperator.Vertically, layout.id, child)}>
-                            <i className="fa fa-ellipsis-h offset-top"></i>
-                            <span className="icon-label">Split Vertically</span>
-                        </div>
+                            <div className="control edit"
+                                 onClick={() => this.props.splitColumn(SplitOperator.Vertically, layout.id, child)}>
+                                <i className="fa fa-ellipsis-h offset-top"></i>
+                                <span className="icon-label">Split Vertically</span>
+                            </div>
 
-                        <div className={hasContent ? 'control remove' : 'is-hidden'}
-                             onClick={() => this.props.insertContent(layout.id, null)}>
-                            <i className="fa fa-trash-o"></i>
-                            <span className="icon-label">Remove Content</span>
-                        </div>
+                            <div className={hasContent ? 'control remove' : 'is-hidden'}
+                                 onClick={() => this.props.insertContent(layout.id, null)}>
+                                <i className="fa fa-trash-o"></i>
+                                <span className="icon-label">Remove Content</span>
+                            </div>
 
-                        <div className={!hasContent ? 'control remove' : 'is-hidden'}
-                             onClick={() => this.props.insertContent(layout.id, null)}>
-                            <i className="fa fa-trash-o"></i>
-                            <span className="icon-label">Remove Cell</span>
+                            <div className={!hasContent ? 'control remove' : 'is-hidden'}
+                                 onClick={() => this.props.removeColumn(layout.id)}>
+                                <i className="fa fa-trash-o"></i>
+                                <span className="icon-label">Remove Cell</span>
+                            </div>
                         </div>
                     </div>
 
