@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom'
 import * as _ from 'lodash'
 import { connect } from 'react-redux'
 
-var Ps:any = require('perfect-scrollbar');
+let Ps:any = require('perfect-scrollbar');
 
 import UoI from '../Components/UoI'
 import UoIContent from './UoIContent'

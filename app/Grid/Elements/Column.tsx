@@ -2,6 +2,8 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 
+let Ps:any = require('perfect-scrollbar');
+
 import Umi from '../../Umi/Umi'
 
 import { Grid } from '../Components/Grid'
@@ -37,6 +39,10 @@ class ColumnElement extends React.Component<IColumnElementProps, {}> {
             if (_.isString(this.layout.child.id))
                 this.props.dispatch(getUoIData(this.layout.child.id));
         }
+
+        Ps.initialize(ReactDOM.findDOMNode(this.refs['controls']), {
+            suppressScrollX: true
+        });
     }
 
     // @TODO on insert content, there should be a modal which takes a callback as part of its argument list. The
@@ -84,7 +90,7 @@ class ColumnElement extends React.Component<IColumnElementProps, {}> {
                         </span>
                     </strong>
 
-                    <div className={hasContent ? 'controls-expandable' : 'controls-expandable center'}>
+                    <div className={hasContent ? 'controls-expandable' : 'controls-expandable center'} ref="controls">
                         <div className="controls-expandable-table-wrapper">
                             <div className={hasContent ? 'control info' : 'is-hidden'}
                                  onClick={() => this.props.insertContent(layout.id, '7')}>
@@ -92,7 +98,7 @@ class ColumnElement extends React.Component<IColumnElementProps, {}> {
                                 <span className="icon-label">Details</span>
                             </div>
 
-                            <div className="control" onClick={() => this.props.insertContent(layout.id, '7')}>
+                            <div className="control insert" onClick={() => this.props.insertContent(layout.id, '7')}>
                                 <i className="fa fa-search"></i>
                                 <span className="icon-label">Insert Content</span>
                             </div>
