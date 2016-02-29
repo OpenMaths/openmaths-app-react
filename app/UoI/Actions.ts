@@ -54,11 +54,3 @@ export function requestUoIToBeInserted(x:number, y:number, id:string) {
         id: id
     };
 }
-
-export const TOGGLE_UOI_GRID_CONTROLS = 'TOGGLE_UOI_GRID_CONTROLS';
-export function toggleUoIGridControls(id:string) {
-    return {
-        type: TOGGLE_UOI_GRID_CONTROLS,
-        id: id
-    };
-}

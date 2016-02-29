@@ -3,7 +3,7 @@ import * as Immutable from 'immutable'
 
 import UoI from './Components/UoI'
 
-import { REQUEST_UOI_DATA, RECEIVE_UOI_DATA, REQUEST_UOI_TO_BE_INSERTED, TOGGLE_UOI_GRID_CONTROLS } from './Actions'
+import { REQUEST_UOI_DATA, RECEIVE_UOI_DATA, REQUEST_UOI_TO_BE_INSERTED } from './Actions'
 
 export function UoIReducer(state:Immutable.Map<string,any>, action) {
     if (_.isUndefined(state)) state = Immutable.Map({
@@ -28,10 +28,6 @@ export function UoIReducer(state:Immutable.Map<string,any>, action) {
 
             return state.merge({
                 InsertUoI: data
-            });
-        case TOGGLE_UOI_GRID_CONTROLS:
-            return state.merge({
-                openUoIGridControls: action.id
             });
         default:
             return state;

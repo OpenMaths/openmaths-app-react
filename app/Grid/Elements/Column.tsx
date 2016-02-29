@@ -1,7 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
-import * as key from 'keymaster'
 
 import Umi from '../../Umi/Umi'
 
@@ -9,7 +8,7 @@ import { Grid } from '../Components/Grid'
 import { Column } from '../Components/Column'
 import UoI from '../../UoI/Components/UoI'
 import UoIBoundingBox from '../../UoI/Elements/UoIBoundingBox'
-import { getUoIData, toggleUoIGridControls } from '../../UoI/Actions'
+import { getUoIData } from '../../UoI/Actions'
 
 import { RowPosition, ColumnPosition, SplitOperator } from '../DataModel'
 import GridElement from './Grid'
@@ -23,36 +22,16 @@ interface IColumnElementProps {
 
     // State => Props
     dispatch?:Redux.Dispatch;
-    openUoIGridControls?:string;
 }
 
 class ColumnElement extends React.Component<IColumnElementProps, {}> {
     layout:Column;
-
-    toggleGridOptions() {
-        this.props.dispatch(toggleUoIGridControls(this.layout.id));
-    }
-
-    shouldComponentUpdate(nextProps:IColumnElementProps) {
-        let shouldUpdate = true;
-
-        if (nextProps.openUoIGridControls)
-            shouldUpdate = nextProps.openUoIGridControls == this.layout.id;
-
-        return shouldUpdate;
-    }
 
     componentDidMount() {
         if (this.layout.child instanceof UoI) {
             if (_.isString(this.layout.child.id))
                 this.props.dispatch(getUoIData(this.layout.child.id));
         }
-
-        key('esc', () => this.props.dispatch(toggleUoIGridControls(null)));
-    }
-
-    componentWillUnmount() {
-        key.unbind('esc');
     }
 
     // @TODO on insert content, there should be a modal which takes a callback as part of its argument list. The
@@ -64,8 +43,6 @@ class ColumnElement extends React.Component<IColumnElementProps, {}> {
         const
             layout = this.layout,
             child = layout.child,
-            controlsClass = this.props.openUoIGridControls && this.props.openUoIGridControls == this.layout.id ? 'controls' : 'controls is-hidden',
-            columnClass = this.props.openUoIGridControls && this.props.openUoIGridControls == this.layout.id ? 'column blur' : 'column',
             insertContent = (insertId:string) => this.props.insertContent(layout.id, insertId);
 
         if (child instanceof Grid) {
@@ -75,72 +52,67 @@ class ColumnElement extends React.Component<IColumnElementProps, {}> {
                 </div>
             );
         } else if (child instanceof UoI) {
-            return (
-                <div className={columnClass}>
-                    <div className="controls-toggler" onClick={() => {this.toggleGridOptions()}}>
-                        <i></i>
-                    </div>
+            const hasContent = !_.isNull(layout.child.id);
 
-                    <ul className={controlsClass}>
-                        <li>
-                            <small className="action" onClick={() => this.props.addRow(RowPosition.Above)}>
-                                <i className="fa fa-chevron-up"></i>
-                            </small>
-                        </li>
-                        <li>
-                            <ul>
-                                <li>
-                                    <small className="action"
-                                           onClick={() => this.props.addColumn(ColumnPosition.Prepend)}>
-                                        <i className="fa fa-chevron-left"></i>
-                                    </small>
-                                </li>
-                                <li>
-                                    <ul>
-                                        <li>
-                                            <small className="action"
-                                                   onClick={() => this.props.insertContent(layout.id, '7')}>
-                                                <i className="fa fa-plus-square-o"></i>
-                                                Add Content
-                                            </small>
-                                        </li>
-                                        <li>
-                                            <small className="action"
-                                                   onClick={() => this.props.splitColumn(SplitOperator.Horizontally, layout.id, child)}>
-                                                <i className="fa fa-arrows-v"></i>
-                                                Split Horizontally
-                                            </small>
-                                        </li>
-                                        <li>
-                                            <small className="action"
-                                                   onClick={() => this.props.splitColumn(SplitOperator.Vertically, layout.id, child)}>
-                                                <i className="fa fa-arrows-h"></i>
-                                                Split Vertically
-                                            </small>
-                                        </li>
-                                        <li>
-                                            <small className="action"
-                                                   onClick={() => this.props.insertContent(layout.id, null)}>
-                                                <i className="fa fa-trash-o"></i>
-                                                Remove Content
-                                            </small>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <small className="action"
-                                           onClick={() => this.props.addColumn(ColumnPosition.Append)}>
-                                        <i className="fa fa-chevron-right"></i>
-                                    </small>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <small className="action" onClick={() => this.props.addRow(RowPosition.Below)}>
-                                <i className="fa fa-chevron-down"></i>
-                            </small>
-                        </li>
-                    </ul>
+            return (
+                <div className="column">
+                    <strong className="controls-boundaries top" onClick={() => this.props.addRow(RowPosition.Above)}>
+                        <span>
+                            <i className="fa fa-chevron-up"></i>
+                        </span>
+                    </strong>
+                    <strong className="controls-boundaries right" onClick={() => this.props.addColumn(ColumnPosition.Append)}>
+                        <span>
+                            <i className="fa fa-chevron-right"></i>
+                        </span>
+                    </strong>
+                    <strong className="controls-boundaries bottom" onClick={() => this.props.addRow(RowPosition.Below)}>
+                        <span>
+                            <i className="fa fa-chevron-down"></i>
+                        </span>
+                    </strong>
+                    <strong className="controls-boundaries left" onClick={() => this.props.addColumn(ColumnPosition.Prepend)}>
+                        <span>
+                            <i className="fa fa-chevron-left"></i>
+                        </span>
+                    </strong>
+
+                    <div className="controls-expandable">
+                        <div className={hasContent ? 'control info' : 'is-hidden'}
+                             onClick={() => this.props.insertContent(layout.id, '7')}>
+                            <i className="fa fa-info"></i>
+                            <span className="icon-label">Details</span>
+                        </div>
+
+                        <div className="control" onClick={() => this.props.insertContent(layout.id, '7')}>
+                            <i className="fa fa-search"></i>
+                            <span className="icon-label">Insert Content</span>
+                        </div>
+
+                        <div className="control edit"
+                             onClick={() => this.props.splitColumn(SplitOperator.Horizontally, layout.id, child)}>
+                            <i className="fa fa-ellipsis-v offset-top"></i>
+                            <span className="icon-label">Split Horizontally</span>
+                        </div>
+
+                        <div className="control edit"
+                             onClick={() => this.props.splitColumn(SplitOperator.Vertically, layout.id, child)}>
+                            <i className="fa fa-ellipsis-h offset-top"></i>
+                            <span className="icon-label">Split Vertically</span>
+                        </div>
+
+                        <div className={hasContent ? 'control remove' : 'is-hidden'}
+                             onClick={() => this.props.insertContent(layout.id, null)}>
+                            <i className="fa fa-trash-o"></i>
+                            <span className="icon-label">Remove Content</span>
+                        </div>
+
+                        <div className={!hasContent ? 'control remove' : 'is-hidden'}
+                             onClick={() => this.props.insertContent(layout.id, null)}>
+                            <i className="fa fa-trash-o"></i>
+                            <span className="icon-label">Remove Cell</span>
+                        </div>
+                    </div>
 
                     <UoIBoundingBox insertContent={insertContent} layout={child}/>
                 </div>
@@ -157,9 +129,7 @@ class ColumnElement extends React.Component<IColumnElementProps, {}> {
 }
 
 function select(state) {
-    return {
-        openUoIGridControls: state.UoIReducer.get('openUoIGridControls')
-    };
+    return {};
 }
 
 export default connect(select)(ColumnElement);

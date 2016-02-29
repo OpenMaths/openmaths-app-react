@@ -4,7 +4,7 @@ import * as _ from 'lodash'
 import { connect } from 'react-redux'
 import { tinyActions } from 'redux-tiny-router'
 
-import { requestUoIToBeInserted, toggleUoIGridControls } from '../../UoI/Actions'
+import { requestUoIToBeInserted } from '../../UoI/Actions'
 
 import { Grid } from '../Components/Grid'
 import { Row } from '../Components/Row'
@@ -36,7 +36,6 @@ class GridElement extends React.Component<IGridProps, {}> {
 
         const newGrid = this.layout;
 
-        this.props.dispatch(toggleUoIGridControls(null));
         this.props.dispatch(requestUpdateGrid(newGrid));
     }
 
@@ -45,7 +44,6 @@ class GridElement extends React.Component<IGridProps, {}> {
             newRow = new Row(Row.constructEmptyUrl()),
             newGrid = this.layout.addRow(position, newRow);
 
-        this.props.dispatch(toggleUoIGridControls(null));
         this.props.dispatch(requestUpdateGrid(newGrid));
     }
 
