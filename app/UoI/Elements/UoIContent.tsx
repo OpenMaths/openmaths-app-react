@@ -5,8 +5,10 @@ import { connect } from 'react-redux'
 
 import UoI from '../Components/UoI'
 
+import ExpandableIndicator from './ExpandableIndicator'
+
 interface IUoIContentProps {
-    id:string;
+    layout:UoI;
 
     // State => Props
     dispatch?:Redux.Dispatch;
@@ -19,7 +21,7 @@ class UoIContent extends React.Component<IUoIContentProps, {}> {
     shouldComponentUpdate(nextProps:IUoIContentProps) {
         let shouldUpdate = true;
 
-        if (nextProps.UoI && nextProps.UoI.id == this.props.id)
+        if (nextProps.UoI && nextProps.UoI.id == this.props.layout.id)
             this.layout = nextProps.UoI;
         else
             shouldUpdate = false;
@@ -41,7 +43,9 @@ class UoIContent extends React.Component<IUoIContentProps, {}> {
 
     render() {
         return this.layout ? (
-            <article ref="ps-container">
+            <article>
+                <ExpandableIndicator layout={this.props.layout}/>
+
                 <header>
                     <small className="label">{this.layout.type}</small>
                     <strong className="heading">{this.layout.title}</strong>
@@ -49,7 +53,7 @@ class UoIContent extends React.Component<IUoIContentProps, {}> {
 
                 <main ref="mathjax" dangerouslySetInnerHTML={this.createContent(this.layout.htmlContent)}/>
             </article>
-        ) : (<div></div>);
+        ) : (<article><ExpandableIndicator layout={this.props.layout}/></article>);
     }
 }
 

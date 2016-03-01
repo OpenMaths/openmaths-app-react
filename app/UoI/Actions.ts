@@ -54,3 +54,19 @@ export function requestUoIToBeInserted(x:number, y:number, id:string) {
         id: id
     };
 }
+
+export const CHECK_UOI_INSERTABLE = 'CHECK_UOI_INSERTABLE';
+export function checkUoIInsertable(x:number, y:number) {
+    return {
+        type: CHECK_UOI_INSERTABLE,
+        x: x,
+        y: y
+    };
+}
+
+export const DISPOSE_UOI_INSERTABLE = 'DISPOSE_UOI_INSERTABLE';
+export function disposeUoIInsertable() {
+    return {
+        type: DISPOSE_UOI_INSERTABLE
+    };
+}

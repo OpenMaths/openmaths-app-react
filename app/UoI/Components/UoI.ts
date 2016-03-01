@@ -13,7 +13,9 @@ export default class UoI {
         this.htmlContent = data.htmlContent ? data.htmlContent : null;
     }
 
-    isWithinBoundingBox(x:number, y:number) {
-        return _.inRange(x, this.position.left, this.position.right) && _.inRange(y, this.position.top, this.position.bottom);
+    isWithinBoundingBox(x:number, y:number):boolean {
+        return this.position
+            && _.inRange(x, this.position.left, this.position.right)
+            && _.inRange(y, this.position.top, this.position.bottom);
     }
 }

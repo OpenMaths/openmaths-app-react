@@ -66,7 +66,7 @@ class UoIBoundingBox extends React.Component<IUoIBoundingBoxProps, {}> {
     render() {
         return (
             <div className="uoi-bounding-box">
-                <UoIContent id={this.layout.id}/>
+                <UoIContent layout={this.layout}/>
             </div>
         );
     }

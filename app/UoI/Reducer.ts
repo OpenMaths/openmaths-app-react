@@ -3,7 +3,8 @@ import * as Immutable from 'immutable'
 
 import UoI from './Components/UoI'
 
-import { REQUEST_UOI_DATA, RECEIVE_UOI_DATA, REQUEST_UOI_TO_BE_INSERTED } from './Actions'
+import { REQUEST_UOI_DATA, RECEIVE_UOI_DATA, REQUEST_UOI_TO_BE_INSERTED,
+    CHECK_UOI_INSERTABLE, DISPOSE_UOI_INSERTABLE } from './Actions'
 
 export function UoIReducer(state:Immutable.Map<string,any>, action) {
     if (_.isUndefined(state)) state = Immutable.Map({
@@ -24,10 +25,20 @@ export function UoIReducer(state:Immutable.Map<string,any>, action) {
                 UoI: action.data
             });
         case REQUEST_UOI_TO_BE_INSERTED:
-            const data = {x: action.x, y: action.y, id: action.id};
+            const data_REQUEST_UOI_TO_BE_INSERTED = {x: action.x, y: action.y, id: action.id};
 
             return state.merge({
-                InsertUoI: data
+                InsertUoI: data_REQUEST_UOI_TO_BE_INSERTED
+            });
+        case CHECK_UOI_INSERTABLE:
+            const data_CHECK_UOI_INSERTABLE = {x: action.x, y: action.y};
+
+            return state.merge({
+                checkUoIInsertable: data_CHECK_UOI_INSERTABLE
+            });
+        case DISPOSE_UOI_INSERTABLE:
+            return state.merge({
+                checkUoIInsertable: null
             });
         default:
             return state;

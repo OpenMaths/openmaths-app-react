@@ -6,7 +6,7 @@ import { tinyActions } from 'redux-tiny-router'
 
 import { touchesWindowBoundaries, Side } from '../../Utils/TouchesWindowBoundaries'
 
-import { requestUoIToBeInserted } from '../../UoI/Actions'
+import { requestUoIToBeInserted, checkUoIInsertable, disposeUoIInsertable } from '../../UoI/Actions'
 
 import { Grid } from '../Components/Grid'
 import { Row } from '../Components/Row'
@@ -21,7 +21,7 @@ import RowElement from './Row'
 interface IGridProps {
     layout:Grid;
     parent?:boolean;
-    removeCell?:() => void
+    removeCell?:() => void;
 
     // State => Props
     dispatch?:Redux.Dispatch;
@@ -143,15 +143,18 @@ class GridElement extends React.Component<IGridProps, {}> {
 
                     subscription = Rx.Observable
                         .fromEvent(w, 'mousemove')
-                        .debounce(1000)
+                        .debounce(500)
                         .map((e:any) => {
                             const windowBoundingRect = document
                                 .getElementById('OpenMathsAppContainer')
                                 .getBoundingClientRect();
 
+                            dispatch(checkUoIInsertable(e.clientX, e.clientY));
+
                             return touchesWindowBoundaries(windowBoundingRect, e.clientX, e.clientY);
                         })
                         .filter((s:Side) => !_.isNull(s))
+                        .finally(() => dispatch(disposeUoIInsertable()))
                         .subscribe((touches:Side) => {
                             console.info(touches);
                         });
