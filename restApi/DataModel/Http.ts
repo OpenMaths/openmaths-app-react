@@ -25,15 +25,15 @@ export class Error {
     message:string;
     code:Response;
 
-    constructor(message:string, code?:Response, data?:any) {
+    constructor(message:string, code?:Response, errorData?:any) {
         this.message = message;
         this.code = _.isUndefined(code) ? Response.ServerError : code;
 
-        if (data) {
-            console.log(data);
+        if (errorData) {
+            console.log(errorData);
 
-            if (data.error)
-                this.message = data.error;
+            if (errorData.error)
+                this.message = errorData.error;
         }
     }
 }

@@ -8,7 +8,7 @@ import { Row, RowUrlConstruct } from '../Grid/Components/Row'
 import { Column, ColumnConstructor } from '../Grid/Components/Column'
 
 import GridElement from '../Grid/Elements/Grid'
-import UrlListener from '../Grid/Elements/UrlListener'
+import NavElement from '../Navigation/Nav'
 
 interface IViewProps {
     // State => Props
@@ -44,7 +44,7 @@ class View extends React.Component<IViewProps, {}> {
 
         return (
             <main id="app">
-                <UrlListener/>
+                <NavElement/>
                 <GridElement layout={newGrid} parent={true}/>
             </main>
         );

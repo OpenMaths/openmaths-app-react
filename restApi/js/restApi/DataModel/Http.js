@@ -17,13 +17,13 @@ var _ = require('lodash');
 })(exports.Response || (exports.Response = {}));
 var Response = exports.Response;
 var Error = (function () {
-    function Error(message, code, data) {
+    function Error(message, code, errorData) {
         this.message = message;
         this.code = _.isUndefined(code) ? Response.ServerError : code;
-        if (data) {
-            console.log(data);
-            if (data.error)
-                this.message = data.error;
+        if (errorData) {
+            console.log(errorData);
+            if (errorData.error)
+                this.message = errorData.error;
         }
     }
     return Error;

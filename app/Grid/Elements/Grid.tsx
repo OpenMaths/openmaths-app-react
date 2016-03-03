@@ -6,17 +6,19 @@ import { tinyActions } from 'redux-tiny-router'
 
 import { touchesWindowBoundaries, Side } from '../../Utils/TouchesWindowBoundaries'
 
-import { requestUoIToBeInserted, checkUoIInsertable, disposeUoIInsertable } from '../../UoI/Actions'
+import { requestUoIToBeInserted, checkUoIInsertable, disposeUoIInsertable,
+    requestCellCreatable, confirmIfCellCreatable } from '../../UoI/Actions'
 
 import { Grid } from '../Components/Grid'
 import { Row } from '../Components/Row'
-import { Column } from '../Components/Column'
+import { Column, ColumnConstructor } from '../Components/Column'
 
 import { requestUpdateGrid } from '../Actions'
-import { RowPosition } from '../DataModel'
+import { RowPosition, ColumnPosition } from '../DataModel'
 import { encodeGridUrl } from '../Url'
 
 import RowElement from './Row'
+import ExpandIntoNewContainerElement from './ExpandIntoNewContainerElement'
 
 interface IGridProps {
     layout:Grid;
@@ -48,6 +50,22 @@ class GridElement extends React.Component<IGridProps, {}> {
             newGrid = this.layout.addRow(position, newRow);
 
         this.props.dispatch(requestUpdateGrid(newGrid));
+    }
+
+    addRowWithContent(position:RowPosition, insertId:string) {
+        const
+            newRow = new Row(Row.constructUrl([Column.constructUrl(ColumnConstructor.Content, insertId)])),
+            newGrid = this.layout.addRow(position, newRow);
+
+        this.props.dispatch(requestUpdateGrid(newGrid));
+    }
+
+    addColumnWithContent(position:ColumnPosition, insertId:string) {
+        let row:Row = _.first(this.layout.children);
+
+        const updatedRow = row.addColumn(position, new Column(Column.constructUrl(ColumnConstructor.Content, insertId)));
+
+        this.updateGrid(updatedRow);
     }
 
     removeRow(rowId:string) {
@@ -94,6 +112,8 @@ class GridElement extends React.Component<IGridProps, {}> {
         const
             layout = this.layout,
             numberOfRows = layout.children.length,
+            addRowWithContent = this.addRowWithContent.bind(this),
+            addColumnWithContent = this.addColumnWithContent.bind(this),
             addRow = this.addRow.bind(this),
             removeRow = this.removeRow.bind(this),
             updateGrid = this.updateGrid.bind(this);
@@ -101,6 +121,9 @@ class GridElement extends React.Component<IGridProps, {}> {
         if (layout instanceof Grid) {
             return (
                 <div className={'grid rows-' + numberOfRows + (this.props.parent ? ' parent' : '')} key={layout.id}>
+                    <ExpandIntoNewContainerElement display={this.props.parent} addRow={addRowWithContent}
+                                                   addColumn={addColumnWithContent}/>
+
                     {_.map(layout.children, (row:Row) => <RowElement addRow={addRow} layout={row} removeRow={removeRow}
                                                                      updateGrid={updateGrid} key={row.id}/>)}
                 </div>
@@ -143,7 +166,7 @@ class GridElement extends React.Component<IGridProps, {}> {
 
                     subscription = Rx.Observable
                         .fromEvent(w, 'mousemove')
-                        .debounce(500)
+                        .debounce(250)
                         .map((e:any) => {
                             const windowBoundingRect = document
                                 .getElementById('OpenMathsAppContainer')
@@ -151,12 +174,19 @@ class GridElement extends React.Component<IGridProps, {}> {
 
                             dispatch(checkUoIInsertable(e.clientX, e.clientY));
 
+                            // Hack to reset Cell Creatable UI helper (the green dashed border box)
+                            dispatch(requestCellCreatable(null, null));
+
                             return touchesWindowBoundaries(windowBoundingRect, e.clientX, e.clientY);
                         })
                         .filter((s:Side) => !_.isNull(s))
-                        .finally(() => dispatch(disposeUoIInsertable()))
+                        .finally(() => {
+                            dispatch(disposeUoIInsertable());
+                            dispatch(confirmIfCellCreatable());
+                        })
                         .subscribe((touches:Side) => {
-                            console.info(touches);
+                            dispatch(disposeUoIInsertable());
+                            dispatch(requestCellCreatable(touches, id));
                         });
 
                     window.addEventListener('mousemove', mousemove);
@@ -176,6 +206,7 @@ class GridElement extends React.Component<IGridProps, {}> {
 
             subscription.dispose();
 
+            // @TODO investigate if delay is necessary here
             dispatch(requestUoIToBeInserted(x, y, id));
         }
     }

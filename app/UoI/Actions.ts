@@ -4,7 +4,9 @@ import * as axios from 'axios'
 import * as _ from 'lodash'
 import * as Rx from 'rx'
 
-import UoI from './Components/UoI';
+import { Side } from '../Utils/TouchesWindowBoundaries'
+
+import UoI from './Components/UoI'
 
 const Http = axios.create({
     baseURL: 'http://localhost:8081/api'
@@ -68,5 +70,21 @@ export const DISPOSE_UOI_INSERTABLE = 'DISPOSE_UOI_INSERTABLE';
 export function disposeUoIInsertable() {
     return {
         type: DISPOSE_UOI_INSERTABLE
+    };
+}
+
+export const REQUEST_CELL_CREATABLE = 'REQUEST_CELL_CREATABLE';
+export function requestCellCreatable(side:Side, id:string) {
+    return {
+        type: REQUEST_CELL_CREATABLE,
+        side: side,
+        id: id
+    };
+}
+
+export const CONFIRM_IF_CELL_CREATABLE = 'CONFIRM_IF_CELL_CREATABLE';
+export function confirmIfCellCreatable() {
+    return {
+        type: CONFIRM_IF_CELL_CREATABLE
     };
 }

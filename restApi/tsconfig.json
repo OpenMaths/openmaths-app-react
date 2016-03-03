@@ -10,6 +10,7 @@
   "files": [
     "../typings/tsd.d.ts",
     "../app/Utils/KaTexHelpers",
+    "./DataModel/GoogleApi.ts",
     "./DataModel/Http.ts",
     "./DataModel/Payload.ts",
     "./router.ts"
