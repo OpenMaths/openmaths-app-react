@@ -5,11 +5,11 @@ import { connect } from 'react-redux'
 
 let Ps:any = require('perfect-scrollbar');
 
-import UoI from '../Components/UoI'
+import { UoI, UoIConstruct } from '../Components/UoI'
 import UoIContent from './UoIContent'
 
 interface IUoIBoundingBoxProps {
-    layout:UoI;
+    layout:UoIConstruct;
     insertContent:(insertId:string) => void;
 
     // State => Props
@@ -19,7 +19,7 @@ interface IUoIBoundingBoxProps {
 }
 
 class UoIBoundingBox extends React.Component<IUoIBoundingBoxProps, {}> {
-    layout:UoI;
+    layout:UoIConstruct;
 
     measure() {
         let instanceEle = ReactDOM.findDOMNode(this);

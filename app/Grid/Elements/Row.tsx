@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as _ from 'lodash'
 
-import UoI from '../../UoI/Components/UoI'
+import { UoIConstruct } from '../../UoI/Components/UoI'
 
 import { Grid, GridUrlConstruct } from '../Components/Grid'
 import { Row } from '../Components/Row'
@@ -53,7 +53,7 @@ export default class RowElement extends React.Component<IRowElementProps, {}> {
         this.props.updateGrid(newRow);
     }
 
-    splitColumn(operator:SplitOperator, columnId:string, uoi:UoI) {
+    splitColumn(operator:SplitOperator, columnId:string, uoi:UoIConstruct) {
         const
             recreateColumnUrl = Column.constructUrl(ColumnConstructor.Content, uoi.id),
             emptyColumnUrl = Column.constructEmptyUrl();

@@ -2,10 +2,10 @@ import * as React from 'react'
 import * as _ from 'lodash'
 import { connect } from 'react-redux'
 
-import UoI from '../Components/UoI'
+import { UoIConstruct } from '../Components/UoI'
 
 interface IExpandableIndicatorProps {
-    layout:UoI;
+    layout:UoIConstruct;
 
     // State => Props
     dispatch?:Redux.Dispatch;
@@ -13,9 +13,6 @@ interface IExpandableIndicatorProps {
 }
 
 class ExpandableIndicator extends React.Component<IExpandableIndicatorProps, {}> {
-    componentDidMount() {
-    }
-
     build() {
         if (this.props.insertable) {
             const

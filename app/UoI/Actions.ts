@@ -1,16 +1,11 @@
-///uoi/:id
-
 import * as axios from 'axios'
 import * as _ from 'lodash'
 import * as Rx from 'rx'
 
+import * as API from '../Utils/Api'
 import { Side } from '../Utils/TouchesWindowBoundaries'
 
-import UoI from './Components/UoI'
-
-const Http = axios.create({
-    baseURL: 'http://localhost:8081/api'
-});
+import { UoI, UoIConstruct, ContentType } from './Components/UoI'
 
 export const REQUEST_UOI_DATA = 'REQUEST_UOI_DATA ';
 function requestUoIData() {
@@ -27,22 +22,29 @@ function receiveUoIData(uoi:UoI) {
     };
 }
 
-export function getUoIData(id:string) {
+export function getUoIData(uoiConstruct:any) {
     return function (dispatch:Redux.Dispatch) {
         dispatch(requestUoIData());
 
-        const
-            url = '/uoi/' + id,
-            getUoIDataPromise = Http.get(url, true);
+        const construct = <UoIConstruct> uoiConstruct;
 
-        Rx.Observable.fromPromise(getUoIDataPromise)
-            //    .map((response:any):AppDescriptionObject[] => _.map(response.data, data =>
-            //        new AppDescriptionObject(data)))
+        let url;
+
+        switch (construct.contentType) {
+            case ContentType.WikipediaContent:
+                url = '/uoi/wikipedia/' + construct.id;
+                break;
+        }
+
+        const getUoIDataPromise = API.ServerInstance.get(url);
+
+        Rx.Observable
+            .fromPromise(getUoIDataPromise)
             .subscribe((response) => {
-                dispatch(receiveUoIData(new UoI(response.data)));
+                dispatch(receiveUoIData(new UoI(construct.contentType, response.data)));
             }, (err) => {
                 console.error(err);
-                //dispatch(showNotification('Could not load VCM App Description List from ' + host, NotificationType.Error));
+                // @TODO toggle error notification
             });
     }
 }

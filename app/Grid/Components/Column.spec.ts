@@ -1,6 +1,6 @@
 import * as _ from 'lodash'
 
-import UoI from '../../UoI/Components/UoI'
+import { UoI, UoIConstruct } from '../../UoI/Components/UoI'
 
 import { Grid } from './Grid'
 import { Row } from './Row'
@@ -14,7 +14,7 @@ describe('Column component', () => {
 
         expect(ColumnComponent.id).toEqual(_.first(_.keys(columnUrl)));
 
-        expect(ColumnComponent.child instanceof UoI).toBe(true);
+        expect(ColumnComponent.child instanceof UoIConstruct).toBe(true);
     });
 
     it('should parse its recurring input correctly', () => {

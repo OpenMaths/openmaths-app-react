@@ -1,16 +1,12 @@
 "use strict";
-var axios = require('axios');
+var cheerio = require('cheerio');
 var crypto = require('crypto');
+var _ = require('lodash');
 var Rx = require('rx');
+var API = require('../app/Utils/Api');
 var GoogleApi_1 = require('./DataModel/GoogleApi');
 var Http_1 = require('./DataModel/Http');
 var bodyParser = require('body-parser');
-var getOMApiInstance = axios.create({
-    baseURL: 'http://127.0.0.1:8080'
-});
-var getGoogleApiInstance = axios.create({
-    baseURL: 'https://www.googleapis.com'
-});
 var csrf;
 module.exports = function (app, router) {
     app.use(bodyParser.urlencoded({ extended: true }));
@@ -19,7 +15,7 @@ module.exports = function (app, router) {
         next();
     });
     router.post('/user/sign-in', function (req, res) {
-        var authToken = req.params['authToken'], promise = getGoogleApiInstance.get('oauth2/v3/tokeninfo?id_token=' + authToken);
+        var authToken = req.params['authToken'], promise = API.GoogleApiInstance.get('oauth2/v3/tokeninfo?id_token=' + authToken);
         Rx.Observable
             .fromPromise(promise)
             .subscribe(function (success) {
@@ -33,23 +29,41 @@ module.exports = function (app, router) {
             res.json(Err.message);
         });
     });
-    router.get('/uoi/:id', function (req, res) {
-        var id = req.params['id'], promise = getOMApiInstance.get('id/' + id);
+    router.get('/uoi/wikipedia/:title', function (req, res) {
+        var title = req.params['title'], promiseParse = API.WikipediaParseInstance(title).get('');
         Rx.Observable
-            .fromPromise(promise)
+            .fromPromise(promiseParse)
+            .map(function (responseParse) {
+            var dataParse = responseParse.data, promiseQueryCategories = API.WikipediaQueryCategoriesInstance(dataParse.parse.pageid).get('');
+            return Rx.Observable
+                .fromPromise(promiseQueryCategories)
+                .map(function (responseQueryCategories) {
+                var dataQueryCategories = responseQueryCategories.data;
+                return {
+                    parseData: dataParse,
+                    queryCategoriesData: dataQueryCategories
+                };
+            });
+        })
+            .switch()
             .subscribe(function (response) {
-            var data = response.data;
-            if (data.success) {
-                res.json(data.success);
-            }
-            else {
-                var Err = new Http_1.Error('An error occurred while fetching UoI: ' + id, Http_1.Response.ServerError, data);
-                res.status(Err.code);
-                res.json(Err.message);
-            }
-        }, function (err) {
-            res.status(Http_1.Response.ServerError);
-            res.json({ error: err });
+            var parseData = response.parseData, queryCategoriesData = response.queryCategoriesData, categories = queryCategoriesData.query.pages[parseData.parse.pageid].categories;
+            var $ = cheerio.load(parseData.parse.text['*']);
+            $('.reference').remove();
+            $('a').each(function (i, aElem) {
+                var link = $(aElem).attr('href');
+                $(aElem)
+                    .addClass('expand-uoi')
+                    .attr('expand-id', link.replace('/wiki/', 'w:'))
+                    .removeAttr('href');
+            });
+            var content = $('p').slice(0, 2);
+            res.json({
+                id: title,
+                title: parseData.parse.title,
+                htmlContent: content.html(),
+                categories: _.map(categories, function (category) { return category.title; })
+            });
         });
     });
     app.use('/api', router);

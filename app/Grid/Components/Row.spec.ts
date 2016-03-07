@@ -1,6 +1,6 @@
 import * as _ from 'lodash'
 
-import UoI from '../../UoI/Components/UoI'
+import { UoIConstruct } from '../../UoI/Components/UoI'
 
 import { ColumnPosition } from '../DataModel'
 
@@ -79,7 +79,7 @@ describe('Row component', () => {
             originalColumn = _.first(RowComponent.children),
             newColumn = new Column(Column.constructUrl(ColumnConstructor.Content, Grid.constructEmptyUrl()));
 
-        expect(originalColumn.child instanceof UoI).toBe(true);
+        expect(originalColumn.child instanceof UoIConstruct).toBe(true);
 
         RowComponent.updateColumn(originalColumn.id, newColumn);
 
@@ -101,7 +101,7 @@ describe('Row component', () => {
 
         const columnToBeRemoved = _.first(RowComponent.children);
 
-        expect(columnToBeRemoved.child instanceof UoI).toBe(true);
+        expect(columnToBeRemoved.child instanceof UoIConstruct).toBe(true);
 
         RowComponent.removeColumn(columnToBeRemoved.id);
 
@@ -115,7 +115,7 @@ describe('Row component', () => {
 
         const columnToBeRemoved = _.last(RowComponent.children);
 
-        expect(columnToBeRemoved.child instanceof UoI).toBe(true);
+        expect(columnToBeRemoved.child instanceof UoIConstruct).toBe(true);
 
         RowComponent.removeColumn(columnToBeRemoved.id);
 

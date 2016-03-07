@@ -8,7 +8,7 @@ import Umi from '../../Umi/Umi'
 
 import { Grid } from '../Components/Grid'
 import { Column } from '../Components/Column'
-import UoI from '../../UoI/Components/UoI'
+import { UoI, UoIConstruct } from '../../UoI/Components/UoI'
 import UoIBoundingBox from '../../UoI/Elements/UoIBoundingBox'
 import { getUoIData } from '../../UoI/Actions'
 
@@ -20,7 +20,7 @@ interface IColumnElementProps {
     addRow:(position:RowPosition) => void;
     addColumn:(position:ColumnPosition) => void;
     removeColumn:(columnId:string) => void;
-    splitColumn:(operator:SplitOperator, columnId:string, uoi:UoI) => void;
+    splitColumn:(operator:SplitOperator, columnId:string, uoi:UoIConstruct) => void;
     insertContent:(columnId:string, insertId:string) => void;
 
     // State => Props
@@ -35,9 +35,9 @@ class ColumnElement extends React.Component<IColumnElementProps, {}> {
     }
 
     componentDidMount() {
-        if (this.layout.child instanceof UoI) {
+        if (this.layout.child instanceof UoIConstruct) {
             if (_.isString(this.layout.child.id))
-                this.props.dispatch(getUoIData(this.layout.child.id));
+                this.props.dispatch(getUoIData(this.layout.child));
         }
 
         const initPsOnElement = ReactDOM.findDOMNode(this.refs['controls']);
@@ -63,7 +63,7 @@ class ColumnElement extends React.Component<IColumnElementProps, {}> {
                     <GridElement removeCell={() => this.removeCell()} layout={child}/>
                 </div>
             );
-        } else if (child instanceof UoI) {
+        } else if (child instanceof UoIConstruct) {
             const hasContent = !_.isNull(layout.child.id);
 
             return (
@@ -104,13 +104,13 @@ class ColumnElement extends React.Component<IColumnElementProps, {}> {
                                 <span className="icon-label">Insert Content</span>
                             </div>
 
-                            <div className="control edit"
+                            <div className={hasContent ? 'control edit' : 'is-hidden'}
                                  onClick={() => this.props.splitColumn(SplitOperator.Horizontally, layout.id, child)}>
                                 <i className="fa fa-ellipsis-v offset-top"></i>
                                 <span className="icon-label">Split Horizontally</span>
                             </div>
 
-                            <div className="control edit"
+                            <div className={hasContent ? 'control edit' : 'is-hidden'}
                                  onClick={() => this.props.splitColumn(SplitOperator.Vertically, layout.id, child)}>
                                 <i className="fa fa-ellipsis-h offset-top"></i>
                                 <span className="icon-label">Split Vertically</span>

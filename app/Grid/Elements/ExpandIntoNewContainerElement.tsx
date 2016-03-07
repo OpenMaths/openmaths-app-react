@@ -20,9 +20,10 @@ interface IExpandIntoNewContainerElementProps {
 }
 
 class ExpandIntoNewContainerElement extends React.Component<IExpandIntoNewContainerElementProps, {}> {
+    display:boolean;
+
     componentWillReceiveProps(nextProps:IExpandIntoNewContainerElementProps) {
-        if (nextProps.create && !this.props.create) {
-            debugger;
+        if (nextProps.create && !this.props.create && this.display) {
             switch (nextProps.create) {
                 case Side.top:
                     this.props.addRow(RowPosition.Above, this.props.createId);
@@ -41,7 +42,9 @@ class ExpandIntoNewContainerElement extends React.Component<IExpandIntoNewContai
     }
 
     build() {
-        if (this.props.creatable && this.props.display) {
+        this.display = this.props.display;
+
+        if (this.props.creatable && this.display) {
             switch (this.props.creatable) {
                 case Side.top:
                     return <div className="creatable add-row top"></div>;

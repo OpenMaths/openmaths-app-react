@@ -3,12 +3,12 @@ import * as ReactDOM from 'react-dom'
 import * as _ from 'lodash'
 import { connect } from 'react-redux'
 
-import UoI from '../Components/UoI'
+import { UoI, UoIConstruct } from '../Components/UoI'
 
 import ExpandableIndicator from './ExpandableIndicator'
 
 interface IUoIContentProps {
-    layout:UoI;
+    layout:UoIConstruct;
 
     // State => Props
     dispatch?:Redux.Dispatch;
@@ -47,7 +47,6 @@ class UoIContent extends React.Component<IUoIContentProps, {}> {
                 <ExpandableIndicator layout={this.props.layout}/>
 
                 <header>
-                    <small className="label">{this.layout.type}</small>
                     <strong className="heading">{this.layout.title}</strong>
                 </header>
 

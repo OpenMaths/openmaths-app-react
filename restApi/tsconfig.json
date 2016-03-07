@@ -9,7 +9,8 @@
   },
   "files": [
     "../typings/tsd.d.ts",
-    "../app/Utils/KaTexHelpers",
+    "../app/Utils/Api.ts",
+    "../app/UoI/Components/UoI.ts",
     "./DataModel/GoogleApi.ts",
     "./DataModel/Http.ts",
     "./DataModel/Payload.ts",

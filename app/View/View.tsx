@@ -31,7 +31,11 @@ class View extends React.Component<IViewProps, {}> {
         let newGrid;
 
         const
-            columnsUrl = [Column.constructUrl(ColumnConstructor.Content, '9'), Column.constructEmptyUrl()],
+            rightSideRows = [Row.constructUrl([Column.constructEmptyUrl()]), Row.constructUrl([Column.constructEmptyUrl()]), Row.constructUrl([Column.constructEmptyUrl()])],
+            rightSideGrid = Grid.constructUrl(rightSideRows);
+
+        const
+            columnsUrl = [Column.constructUrl(ColumnConstructor.Content, 'w:User_interface'), Column.constructUrl(ColumnConstructor.Content, rightSideGrid)],
             rowsUrl = [Row.constructUrl(columnsUrl)],
             gridUrl = Grid.constructUrl(rowsUrl);
 

@@ -1,7 +1,12 @@
 import * as axios from 'axios'
+import * as cheerio from 'cheerio'
 import * as crypto from 'crypto'
 import * as express from 'express'
+import * as _ from 'lodash'
 import * as Rx from 'rx'
+
+import * as API from '../app/Utils/Api'
+import * as UoIComponent from '../app/UoI/Components/UoI'
 
 import { GoogleUser } from './DataModel/GoogleApi'
 import { OurScalaApiPayload } from './DataModel/Payload'
@@ -9,13 +14,10 @@ import { Response, Error } from './DataModel/Http'
 
 const bodyParser = require('body-parser');
 
-let getOMApiInstance = axios.create({
-    baseURL: 'http://127.0.0.1:8080'
-});
-
-let getGoogleApiInstance = axios.create({
-    baseURL: 'https://www.googleapis.com'
-});
+interface IWikipediaMappedResponse {
+    parseData: API.IWikipediaParseInstanceResponse;
+    queryCategoriesData:API.IWikipediaQueryTagsInstanceResponse
+}
 
 let csrf:string;
 
@@ -31,7 +33,7 @@ module.exports = (app:express.Application, router:express.Router) => {
     router.post('/user/sign-in', (req:express.Request, res:express.Response) => {
         const
             authToken = req.params['authToken'],
-            promise = getGoogleApiInstance.get('oauth2/v3/tokeninfo?id_token=' + authToken);
+            promise = API.GoogleApiInstance.get('oauth2/v3/tokeninfo?id_token=' + authToken);
 
         Rx.Observable
             .fromPromise(promise)
@@ -51,27 +53,57 @@ module.exports = (app:express.Application, router:express.Router) => {
             });
     });
 
-    router.get('/uoi/:id', (req:express.Request, res:express.Response) => {
+    router.get('/uoi/wikipedia/:title', (req:express.Request, res:express.Response) => {
         const
-            id = req.params['id'],
-            promise = getOMApiInstance.get('id/' + id);
+            title = req.params['title'],
+            promiseParse = API.WikipediaParseInstance(title).get('');
 
         Rx.Observable
-            .fromPromise(promise)
-            .subscribe(response => {
-                const data:any = response.data;
+            .fromPromise(promiseParse)
+            .map(responseParse => {
+                const
+                    dataParse = <API.IWikipediaParseInstanceResponse> responseParse.data,
+                    promiseQueryCategories = API.WikipediaQueryCategoriesInstance(dataParse.parse.pageid).get('');
 
-                if (data.success) {
-                    res.json(data.success);
-                } else {
-                    const Err = new Error('An error occurred while fetching UoI: ' + id, Response.ServerError, data);
+                return Rx.Observable
+                    .fromPromise(promiseQueryCategories)
+                    .map(responseQueryCategories => {
+                        const dataQueryCategories = <API.IWikipediaQueryTagsInstanceResponse> responseQueryCategories.data;
 
-                    res.status(Err.code);
-                    res.json(Err.message);
-                }
-            }, err => {
-                res.status(Response.ServerError);
-                res.json({error: err});
+                        return {
+                            parseData: dataParse,
+                            queryCategoriesData: dataQueryCategories
+                        }
+                    });
+            })
+            .switch()
+            .subscribe((response:IWikipediaMappedResponse) => {
+                const
+                    parseData = response.parseData,
+                    queryCategoriesData = response.queryCategoriesData,
+                    categories = queryCategoriesData.query.pages[parseData.parse.pageid].categories;
+
+                let $ = cheerio.load(parseData.parse.text['*']);
+
+                $('.reference').remove();
+
+                $('a').each((i, aElem) => {
+                    const link = $(aElem).attr('href');
+
+                    $(aElem)
+                        .addClass('expand-uoi')
+                        .attr('expand-id', link.replace('/wiki/', 'w:'))
+                        .removeAttr('href');
+                });
+
+                const content = $('p').slice(0, 2);
+
+                res.json({
+                    id: title,
+                    title: parseData.parse.title,
+                    htmlContent: content.html(),
+                    categories: _.map(categories, category => category.title)
+                });
             });
     });
 

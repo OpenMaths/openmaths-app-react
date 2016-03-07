@@ -1,20 +1,18 @@
-export enum ContentType {ContentEmpty = 1, WikipediaContent = 2, OpenMathsContent = 3}
-
-export class UoIConstruct {
-    contentType:ContentType;
-    id:string;
-    position:ClientRect;
-
-    // @TODO test this, it's easyyyyy
-    constructor(identifier:string) {
+"use strict";
+(function (ContentType) {
+    ContentType[ContentType["ContentEmpty"] = 1] = "ContentEmpty";
+    ContentType[ContentType["WikipediaContent"] = 2] = "WikipediaContent";
+    ContentType[ContentType["OpenMathsContent"] = 3] = "OpenMathsContent";
+})(exports.ContentType || (exports.ContentType = {}));
+var ContentType = exports.ContentType;
+var UoIConstruct = (function () {
+    function UoIConstruct(identifier) {
         if (!identifier) {
             this.contentType = ContentType.ContentEmpty;
             this.id = null;
-        } else {
-            const
-                explodeIdentifier = identifier.split(':'),
-                identifierConstruct = _.first(explodeIdentifier);
-
+        }
+        else {
+            var explodeIdentifier = identifier.split(':'), identifierConstruct = _.first(explodeIdentifier);
             switch (identifierConstruct) {
                 case 'w':
                     this.contentType = ContentType.WikipediaContent;
@@ -23,28 +21,20 @@ export class UoIConstruct {
                     this.contentType = ContentType.ContentEmpty;
                     break;
             }
-
             this.id = identifierConstruct
                 ? _.without(explodeIdentifier, identifierConstruct).join(':') : explodeIdentifier.join(':');
         }
     }
-
-    isWithinBoundingBox(x:number, y:number):boolean {
+    UoIConstruct.prototype.isWithinBoundingBox = function (x, y) {
         return this.position
             && _.inRange(x, this.position.left, this.position.right)
             && _.inRange(y, this.position.top, this.position.bottom);
-    }
-}
-
-export class UoI {
-    contentType:ContentType;
-    id:string;
-    title:string;
-    type:string;
-    htmlContent:string;
-    categories:string[];
-
-    constructor(contentType:ContentType, data:any) {
+    };
+    return UoIConstruct;
+}());
+exports.UoIConstruct = UoIConstruct;
+var UoI = (function () {
+    function UoI(contentType, data) {
         switch (contentType) {
             case ContentType.WikipediaContent:
                 this.contentType = contentType;
@@ -55,4 +45,7 @@ export class UoI {
                 this.categories = data.categories;
         }
     }
-}
+    return UoI;
+}());
+exports.UoI = UoI;
+//# sourceMappingURL=UoI.js.map

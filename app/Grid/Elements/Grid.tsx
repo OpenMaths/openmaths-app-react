@@ -44,20 +44,17 @@ class GridElement extends React.Component<IGridProps, {}> {
         this.props.dispatch(requestUpdateGrid(newGrid));
     }
 
-    addRow(position:RowPosition) {
+    addRow(position:RowPosition, insertId?:string) {
         const
-            newRow = new Row(Row.constructEmptyUrl()),
+            columnConstructor = insertId ? Column.constructUrl(ColumnConstructor.Content, insertId) : Column.constructEmptyUrl(),
+            newRow = new Row(Row.constructUrl([columnConstructor])),
             newGrid = this.layout.addRow(position, newRow);
 
         this.props.dispatch(requestUpdateGrid(newGrid));
     }
 
     addRowWithContent(position:RowPosition, insertId:string) {
-        const
-            newRow = new Row(Row.constructUrl([Column.constructUrl(ColumnConstructor.Content, insertId)])),
-            newGrid = this.layout.addRow(position, newRow);
-
-        this.props.dispatch(requestUpdateGrid(newGrid));
+        this.addRow(position, insertId);
     }
 
     addColumnWithContent(position:ColumnPosition, insertId:string) {
@@ -152,15 +149,21 @@ class GridElement extends React.Component<IGridProps, {}> {
             y = event.pageY;
 
             if (event.target.tagName.toLowerCase() == 'a') {
+                event.preventDefault();
+
+                console.log(event);
+
                 const
-                    attr = event.target.attributes,
-                    containsExpandId = attr['expand-id'];
+                    classList = event.target.classList,
+                    containsExpandId = _.includes(classList, 'expand-uoi');
 
                 // @TODO a nicer way of doing this?
                 if (containsExpandId) {
                     event.preventDefault();
 
-                    id = containsExpandId.value;
+                    const attributes = event.target.attributes;
+
+                    id = attributes['expand-id'].value;
 
                     let w:any = window;
 

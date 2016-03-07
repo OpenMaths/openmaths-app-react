@@ -36,3 +36,4 @@
 /// <reference path="katex/katex.d.ts" />
 /// <reference path="mathjax/mathjax.d.ts" />
 /// <reference path="keymaster/keymaster.d.ts" />
+/// <reference path="cheerio/cheerio.d.ts" />

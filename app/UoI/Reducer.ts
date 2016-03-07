@@ -1,7 +1,7 @@
 import * as _ from 'lodash'
 import * as Immutable from 'immutable'
 
-import UoI from './Components/UoI'
+import { UoI } from './Components/UoI'
 
 import { REQUEST_UOI_DATA, RECEIVE_UOI_DATA, REQUEST_UOI_TO_BE_INSERTED,
     CHECK_UOI_INSERTABLE, DISPOSE_UOI_INSERTABLE, REQUEST_CELL_CREATABLE, CONFIRM_IF_CELL_CREATABLE } from './Actions'

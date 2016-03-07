@@ -29,7 +29,7 @@ class Nav extends React.Component<INavProps, {}> {
     //}
 
     render() {
-        return (
+        return true == true ? <div></div> : (
             <nav id="primary" className="hidden">
                 <ul>
                     <li>
