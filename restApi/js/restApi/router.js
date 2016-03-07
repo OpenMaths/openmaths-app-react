@@ -54,7 +54,7 @@ module.exports = function (app, router) {
                 var link = $(aElem).attr('href');
                 $(aElem)
                     .addClass('expand-uoi')
-                    .attr('expand-id', link.replace('/wiki/', 'w:'))
+                    .attr('expand-id', decodeURI(link.replace('/wiki/', 'w:')))
                     .removeAttr('href');
             });
             var content = $('p').slice(0, 2);

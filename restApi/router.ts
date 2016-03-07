@@ -92,7 +92,7 @@ module.exports = (app:express.Application, router:express.Router) => {
 
                     $(aElem)
                         .addClass('expand-uoi')
-                        .attr('expand-id', link.replace('/wiki/', 'w:'))
+                        .attr('expand-id', decodeURI(link.replace('/wiki/', 'w:')))
                         .removeAttr('href');
                 });
 

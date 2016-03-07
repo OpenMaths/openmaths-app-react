@@ -3,10 +3,13 @@ export enum ContentType {ContentEmpty = 1, WikipediaContent = 2, OpenMathsConten
 export class UoIConstruct {
     contentType:ContentType;
     id:string;
+    constructId:string;
     position:ClientRect;
 
     // @TODO test this, it's easyyyyy
     constructor(identifier:string) {
+        this.constructId = identifier;
+
         if (!identifier) {
             this.contentType = ContentType.ContentEmpty;
             this.id = null;
@@ -18,14 +21,13 @@ export class UoIConstruct {
             switch (identifierConstruct) {
                 case 'w':
                     this.contentType = ContentType.WikipediaContent;
+                    this.id = _.without(explodeIdentifier, identifierConstruct).join(':');
                     break;
                 default:
                     this.contentType = ContentType.ContentEmpty;
+                    this.id = null;
                     break;
             }
-
-            this.id = identifierConstruct
-                ? _.without(explodeIdentifier, identifierConstruct).join(':') : explodeIdentifier.join(':');
         }
     }
 

@@ -102,6 +102,8 @@ export class Grid {
         // go through all the children, concatenate into a single list and construct a grid
         const gridUrl:RowUrlConstruct[] = _.map(this.children, (row:Row) => row.getConstructUrl());
 
+        console.log(Grid.constructUrl(gridUrl));
+
         return Grid.constructUrl(gridUrl);
     }
 }

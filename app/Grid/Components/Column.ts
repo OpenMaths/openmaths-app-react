@@ -61,14 +61,14 @@ export class Column {
     }
 
     getConstructUrl():ColumnUrlConstruct {
-        const child:any = this.child;
-
         let content;
 
-        if (child instanceof Grid) {
-            content = child.getConstructUrl();
+        if (this.child instanceof Grid) {
+            const childGrid = <Grid> this.child;
+            content = childGrid.getConstructUrl();
         } else {
-            content = child.id;
+            const childUoI = <UoIConstruct> this.child;
+            content = childUoI.constructId;
         }
 
         return Column.constructUrl(ColumnConstructor.Content, content);
