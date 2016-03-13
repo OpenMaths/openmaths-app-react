@@ -31,11 +31,12 @@ class View extends React.Component<IViewProps, {}> {
         let newGrid;
 
         const
-            rightSideRows = [Row.constructUrl([Column.constructEmptyUrl()]), Row.constructUrl([Column.constructEmptyUrl()]), Row.constructUrl([Column.constructEmptyUrl()])],
-            rightSideGrid = Grid.constructUrl(rightSideRows);
+            sideColLeft = Column.constructUrl(ColumnConstructor.Content, Grid.constructUrl([Row.constructUrl([Column.constructEmptyUrl()]), Row.constructUrl([Column.constructEmptyUrl()])])),
+            middleCol = Column.constructUrl(ColumnConstructor.Content, Grid.constructUrl([Row.constructUrl([Column.constructEmptyUrl()]), Row.constructUrl([Column.constructUrl(ColumnConstructor.Content, 'w:User_interface')]), Row.constructUrl([Column.constructEmptyUrl()])])),
+            sideColRight = Column.constructUrl(ColumnConstructor.Content, Grid.constructUrl([Row.constructUrl([Column.constructEmptyUrl()]), Row.constructUrl([Column.constructEmptyUrl()])]));
 
         const
-            columnsUrl = [Column.constructUrl(ColumnConstructor.Content, 'w:User_interface'), Column.constructUrl(ColumnConstructor.Content, rightSideGrid)],
+            columnsUrl = [sideColLeft, middleCol, sideColRight],
             rowsUrl = [Row.constructUrl(columnsUrl)],
             gridUrl = Grid.constructUrl(rowsUrl);
 

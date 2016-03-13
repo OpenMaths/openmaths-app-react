@@ -4,12 +4,15 @@ import { connect } from 'react-redux'
 //import { RouterState } from 'redux-tiny-router'
 //import { getGSI } from '../Utils/Url'
 
+import User from '../User/User'
+
 //import { signUserOut } from '../Authorisation/Actions'
 //import { IGoogleApi, GoogleUser } from '../Authorisation/DataStructure'
 
 //import LoadingIndicator from './LoadingIndicator'
 
-//declare var gapi:IGoogleApi;
+declare var gapi:any;
+// TODO declare var gapi:IGoogleApi;
 
 interface INavProps {
     // STATE => PROPS
@@ -28,8 +31,35 @@ class Nav extends React.Component<INavProps, {}> {
     //    });
     //}
 
+    componentDidMount() {
+        let auth2;
+
+        const
+            signInButton:any = this.refs['signInHandler'],
+            dispatchCallback = (token:string) => this.props.dispatch(signUserIn(token));
+
+        gapi.load('auth2', () => {
+            const apiInstance = gapi.auth2.getAuthInstance();
+
+            auth2 = !_.isNull(apiInstance) ? apiInstance : gapi.auth2.init({
+                client_id: User.gClientId,
+                cookiepolicy: User.gCookiePolicy
+            });
+
+            auth2.attachClickHandler(signInButton, {}, googleUser => {
+                const
+                    token = googleUser.getAuthResponse().id_token;
+
+                dispatchCallback(token);
+            }, error => {
+                console.error(error);
+                //this.props.dispatch(showNotification('Could not sign in under adbrain.com', NotificationType.Error));
+            });
+        });
+    }
+
     render() {
-        return true == true ? <div></div> : (
+        return (
             <nav id="primary" className="hidden">
                 <ul>
                     <li>
@@ -63,7 +93,7 @@ class Nav extends React.Component<INavProps, {}> {
                             <span className="icon-label">Dark Theme</span>
                         </a>
                     </li>
-                    <li>
+                    <li ref="signInHandler">
                         <a>
                             <i className="fa fa-sign-in"></i>
                             <span className="icon-label">Sign In with Google</span>

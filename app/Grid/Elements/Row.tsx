@@ -55,7 +55,7 @@ export default class RowElement extends React.Component<IRowElementProps, {}> {
 
     splitColumn(operator:SplitOperator, columnId:string, uoi:UoIConstruct) {
         const
-            recreateColumnUrl = Column.constructUrl(ColumnConstructor.Content, uoi.id),
+            recreateColumnUrl = Column.constructUrl(ColumnConstructor.Content, uoi.constructId),
             emptyColumnUrl = Column.constructEmptyUrl();
 
         let newColumnContent:GridUrlConstruct;
